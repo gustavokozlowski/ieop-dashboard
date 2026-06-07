@@ -125,7 +125,7 @@ export function RegisterPage() {
               <div className={styles.lockWord}>
                 IE<b>OP</b>
               </div>
-              <div className={styles.lockSub}>Eficiência de Obras Públicas · RJ</div>
+              <div className={styles.lockSub}>Eficiência de Obras Públicas · Macaé/RJ</div>
             </div>
           </div>
 

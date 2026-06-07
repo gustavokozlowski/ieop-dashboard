@@ -22,6 +22,13 @@
   line-height: 1.4;
 }
 
+/* Nome ausente: tom discreto, sem peso de título, para não parecer um dado real. */
+.nomeVazio {
+  font-weight: var(--font-normal);
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
 .row {
   display: flex;
   gap: var(--space-2);

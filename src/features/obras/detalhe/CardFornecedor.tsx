@@ -13,11 +13,16 @@ function maskCnpj(cnpj: string): string {
 
 export function CardFornecedor({ fornecedor }: CardFornecedorProps) {
   const cnpjInformado = fornecedor.cnpj.replace(/\D/g, "").length > 0;
+  // O detalhe da obra não traz o nome do fornecedor (adapter usa "—"); só o
+  // CNPJ. Sem nome real, mostramos um rótulo discreto em vez de um traço solto.
+  const nomeInformado = fornecedor.nome.trim() !== "" && fornecedor.nome.trim() !== "—";
 
   return (
     <div className={styles.card}>
       <p className={styles.title}>Fornecedor</p>
-      <p className={styles.nome}>{fornecedor.nome}</p>
+      <p className={`${styles.nome} ${nomeInformado ? "" : styles.nomeVazio}`}>
+        {nomeInformado ? fornecedor.nome : "Fornecedor não identificado"}
+      </p>
 
       <div className={styles.row}>
         <span className={styles.rowLabel}>CNPJ</span>
@@ -49,13 +54,17 @@ export function CardFornecedor({ fornecedor }: CardFornecedorProps) {
         </div>
       )}
 
-      <a
-        href={`/fornecedores/${fornecedor.id}`}
-        className={styles.profileLink}
-        aria-label={`Ver perfil completo de ${fornecedor.nome}`}
-      >
-        Ver perfil completo →
-      </a>
+      {fornecedor.id.trim() !== "" && (
+        <a
+          href={`/fornecedores/${fornecedor.id}`}
+          className={styles.profileLink}
+          aria-label={
+            nomeInformado ? `Ver perfil completo de ${fornecedor.nome}` : "Ver perfil completo"
+          }
+        >
+          Ver perfil completo →
+        </a>
+      )}
     </div>
   );
 }

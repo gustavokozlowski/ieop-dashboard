@@ -4,9 +4,9 @@ import { AlertSkeleton } from "./Skeleton";
 import type { Obra } from "./types";
 
 function probClass(prob: number): string {
-  if (prob >= 0.7) return styles.high;
-  if (prob >= 0.4) return styles.medium;
-  return styles.low;
+  if (prob >= 0.7) return styles.high ?? "";
+  if (prob >= 0.4) return styles.medium ?? "";
+  return styles.low ?? "";
 }
 
 interface AlertCardProps {

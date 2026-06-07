@@ -17,7 +17,7 @@ O score é traduzido em cinco classes — **Ótimo** (≥80), **Bom** (≥60),
 **Regular** (≥40), **Ruim** (≥20) e **Crítico** (<20) — usadas para colorir
 cards, badges, a tabela de obras e os marcadores do mapa.
 
-> O IEOP é **calculado no backend** (`duopen-ml`) e exposto via API. O frontend
+> O IEOP é **calculado no backend** (`backend-ieop`) e exposto via API. O frontend
 > apenas consome e exibe — toda lógica de classificação/cor é puramente visual.
 
 ---

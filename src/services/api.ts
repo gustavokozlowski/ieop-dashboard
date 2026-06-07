@@ -27,10 +27,16 @@ declare module "axios" {
 // fora do .env local e aponte o backend via API_PROXY_TARGET (vide src/index.ts).
 export const BASE_URL = process.env.BUN_PUBLIC_API_URL || "/proxy";
 
+// Timeout evita que o app congele para sempre se o backend não responder
+// (ex.: "Verificando sessão…" eterno no restore). Esgotado → axios rejeita →
+// o fluxo cai no catch (logout/erro) em vez de pendurar.
+export const REQUEST_TIMEOUT_MS = 15_000;
+
 export const apiClient = axios.create({
   baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
   withCredentials: true,
+  timeout: REQUEST_TIMEOUT_MS,
 });
 
 // ── Request: inject access token ─────────────────────────────────
@@ -57,6 +63,7 @@ function drainQueue(err: unknown, token: string | null) {
 const rawAxios = axios.create({
   baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
+  timeout: REQUEST_TIMEOUT_MS,
 });
 
 interface TokenResponse {

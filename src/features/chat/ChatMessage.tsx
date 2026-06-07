@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useAuthContext } from "../../auth/AuthContext";
+import { initials } from "../../auth/initials";
 import styles from "./ChatMessage.module.css";
 import { SourceCard } from "./SourceCard";
 import type { Message } from "./types";
@@ -14,6 +16,7 @@ interface ChatMessageProps {
 
 export function ChatMessage({ message, anchorRef }: ChatMessageProps) {
   const [copied, setCopied] = useState(false);
+  const { user } = useAuthContext();
   const isUser = message.role === "user";
 
   async function handleCopy() {
@@ -29,7 +32,7 @@ export function ChatMessage({ message, anchorRef }: ChatMessageProps) {
   return (
     <div ref={anchorRef} className={`${styles.message} ${isUser ? styles.user : styles.assistant}`}>
       <div className={styles.avatar} aria-hidden>
-        {isUser ? "Você" : "IA"}
+        {isUser ? initials(user?.nome ?? "") : "IA"}
       </div>
 
       <div className={styles.bubble}>

@@ -23,11 +23,11 @@
   letter-spacing: 0.02em;
 }
 
-/* Usuário: avatar neutro (surface2). IA: avatar com gradiente de marca. */
+/* Usuário: avatar de iniciais igual ao do perfil (gradiente de marca).
+   Mensagens do usuário ficam à direita (row-reverse), a IA à esquerda. */
 .message.user .avatar {
-  background: var(--color-surface2);
-  color: var(--color-text-secondary);
-  border: 1px solid var(--color-border);
+  background: linear-gradient(135deg, #2fbe90, #168a63);
+  color: #fff;
 }
 
 .message.assistant .avatar {

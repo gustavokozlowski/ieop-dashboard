@@ -1,6 +1,7 @@
 import { type ReactNode, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAuthContext } from "../auth/AuthContext";
+import { initials } from "../auth/initials";
 import { useObrasTotal } from "../features/obras/useObras";
 import { PERFIL_LABELS } from "../schemas/auth.schema";
 import { LogoIcon, LogoutIcon } from "./icons";
@@ -16,14 +17,6 @@ interface PageLayoutProps {
   /** Migalha exibida acima do título (ex.: "Macaé / Painel analítico"). */
   breadcrumb?: string;
   headerRight?: ReactNode;
-}
-
-/** Iniciais para o avatar do usuário (ex.: "Gustavo K." → "GK"). */
-function initials(nome: string): string {
-  const parts = nome.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return "··";
-  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase();
-  return (parts[0]![0]! + parts[parts.length - 1]![0]!).toUpperCase();
 }
 
 export function PageLayout({ children, nav, pageTitle, breadcrumb, headerRight }: PageLayoutProps) {

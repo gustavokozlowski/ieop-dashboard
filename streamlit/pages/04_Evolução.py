@@ -103,7 +103,7 @@ if view == "Geral":
         legend=dict(orientation="h", yanchor="bottom", y=1.02),
         hovermode="x unified",
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
 else:
     monthly_sec = (
@@ -126,7 +126,7 @@ else:
         hovermode="x unified",
     )
     fig.update_traces(hovertemplate="%{y:.1%}<extra>%{fullData.name}</extra>")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
 # ── Heatmap de risco mês × secretaria ─────────────────────────────────────────
 
@@ -149,4 +149,4 @@ fig2 = go.Figure(
     )
 )
 fig2.update_layout(**db.PLOTLY_LAYOUT, height=350)
-st.plotly_chart(fig2, use_container_width=True)
+st.plotly_chart(fig2, width="stretch")

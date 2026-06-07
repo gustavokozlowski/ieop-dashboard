@@ -86,7 +86,7 @@ fig.update_layout(
     **db.PLOTLY_LAYOUT, height=420, title="Prob. média de atraso — secretaria × status"
 )
 fig.update_xaxes(side="bottom")
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 
 # ── Distribuição de risco ─────────────────────────────────────────────────────
 
@@ -119,4 +119,4 @@ fig2.update_layout(
     showlegend=True,
     legend=dict(orientation="h", yanchor="bottom", y=1.02),
 )
-st.plotly_chart(fig2, use_container_width=True)
+st.plotly_chart(fig2, width="stretch")

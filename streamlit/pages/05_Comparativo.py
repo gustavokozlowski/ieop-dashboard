@@ -25,7 +25,12 @@ if df.empty:
 
 # Validar colunas
 if "execucao_real" not in df.columns or "execucao_prevista" not in df.columns:
-    st.error("Colunas `execucao_real` e `execucao_prevista` não encontradas na tabela.")
+    st.info(
+        "📊 **Comparativo indisponível.** A base atual não expõe os campos de "
+        "execução **real × prevista** (`execucao_real` / `execucao_prevista`). "
+        "Assim que o backend de predições fornecer esses dados, esta análise "
+        "aparece automaticamente."
+    )
     st.stop()
 
 df["desvio"] = df["execucao_real"] - df["execucao_prevista"]
@@ -124,7 +129,7 @@ with col_scatter:
         xaxis_range=[0, 105],
         yaxis_range=[0, 105],
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
 # ── Distribuição de desvio ─────────────────────────────────────────────────────
 
@@ -154,7 +159,7 @@ with col_dist:
         yaxis_title="Nº obras",
         showlegend=False,
     )
-    st.plotly_chart(fig2, use_container_width=True)
+    st.plotly_chart(fig2, width="stretch")
 
 # ── Tabela top desvios ─────────────────────────────────────────────────────────
 
@@ -182,7 +187,7 @@ top_dev["execucao_real"] = top_dev["execucao_real"].map("{:.1f}%".format)
 
 st.dataframe(
     top_dev,
-    use_container_width=True,
+    width="stretch",
     hide_index=True,
     column_config={
         "nome": "Obra",

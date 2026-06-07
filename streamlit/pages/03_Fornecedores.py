@@ -115,7 +115,7 @@ fig.update_layout(
     coloraxis_colorbar=dict(title="Prob. Atraso", tickformat=".0%"),
     title="Risco médio × recorrência de fornecedor (tamanho = valor total)",
 )
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 
 # ── Tabela top fornecedores ────────────────────────────────────────────────────
 
@@ -126,7 +126,7 @@ top_table["avg_prob_estouro"] = top_table["avg_prob_estouro"].map("{:.1%}".forma
 top_table["valor_total"] = top_table["valor_total"].map("R$ {:,.0f}".format)
 st.dataframe(
     top_table[["fornecedor_nome", "n_obras", "avg_prob_atraso", "avg_prob_estouro", "valor_total"]],
-    use_container_width=True,
+    width="stretch",
     hide_index=True,
     column_config={
         "fornecedor_nome": "Fornecedor",

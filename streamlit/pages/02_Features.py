@@ -77,7 +77,7 @@ with col_bar:
         xaxis_tickformat=".3f",
         title=f"Top {n} features por importância",
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
 # ── Curva acumulada ────────────────────────────────────────────────────────────
 
@@ -107,7 +107,7 @@ if show_cumulative and col_cum is not None:
             xaxis_title="Nº de features",
             yaxis_title="Cobertura",
         )
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, width="stretch")
 
 # ── Tabela ────────────────────────────────────────────────────────────────────
 
@@ -118,4 +118,4 @@ display["rank"] = range(1, len(display) + 1)
 cols_show = ["rank", "feature_name", "importance"] + (
     ["descricao"] if "descricao" in display.columns else []
 )
-st.dataframe(display[cols_show], use_container_width=True, hide_index=True)
+st.dataframe(display[cols_show], width="stretch", hide_index=True)

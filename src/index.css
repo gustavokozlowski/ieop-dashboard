@@ -1,4 +1,5 @@
 @import "./styles/tokens.css";
+@import "./styles/animations.css";
 
 *,
 *::before,
@@ -50,35 +51,8 @@ svg {
   display: flex;
 }
 
-/* Animações de entrada reutilizáveis (referenciadas por nome nos CSS Modules). */
-@keyframes ieop-fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes ieop-fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Spin global: keyframes definidos DENTRO de CSS Modules são hasheados pelo Bun,
-   mas a referência `animation: nome` não é reescrita — a animação some. Manter
-   os keyframes aqui (global, sem hash) faz a referência resolver. */
-@keyframes ieop-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
+/* Keyframes movidos para styles/animations.css (importado acima) — manter dentro
+   de CSS Modules quebra no Bun (definição hasheada, referência não). */
 
 @media (prefers-reduced-motion: reduce) {
   *,

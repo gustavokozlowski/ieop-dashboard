@@ -314,6 +314,9 @@
   flex: 1;
   padding: 24px 28px 40px;
   min-width: 0;
+  /* Coluna flex: empurra o Footer (margin-top: auto) para o fim da página. */
+  display: flex;
+  flex-direction: column;
   /* Entrada suave ao montar/navegar (PageLayout remonta por página). */
   animation: ieop-fade-in var(--motion-enter) var(--ease-out) both;
 }

@@ -1,7 +1,8 @@
 /* ── Footer · by team Serena (swag mode) ── */
 .footer {
   position: relative;
-  margin-top: 8px;
+  /* auto: numa coluna flex (.content), empurra o rodapé para o fim da página. */
+  margin-top: auto;
   padding: 26px 20px 22px;
   display: flex;
   flex-direction: column;
@@ -28,19 +29,7 @@
     transparent 70%
   );
   filter: blur(7px);
-  animation: breathe 5.5s ease-in-out infinite;
-}
-
-@keyframes breathe {
-  0%,
-  100% {
-    opacity: 0.55;
-    transform: translate(-50%, -50%) scale(0.92);
-  }
-  50% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.06);
-  }
+  animation: ieop-breathe 5.5s ease-in-out infinite;
 }
 
 .line {
@@ -90,17 +79,8 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  animation: shimmer 4.2s linear infinite;
+  animation: ieop-footer-shimmer 4.2s linear infinite;
   filter: drop-shadow(0 0 12px rgba(47, 190, 144, 0.4));
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 250% 50%;
-  }
 }
 
 .heart {
@@ -136,17 +116,6 @@
   color: #aeffdc;
   pointer-events: none;
   opacity: 0;
-  animation: twinkle 3.2s ease-in-out infinite;
+  animation: ieop-twinkle 3.2s ease-in-out infinite;
 }
 
-@keyframes twinkle {
-  0%,
-  100% {
-    opacity: 0;
-    transform: scale(0.4) rotate(0deg);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1) rotate(20deg);
-  }
-}

@@ -36,17 +36,8 @@
   filter: blur(20px);
   top: 30%;
   left: 30%;
-  animation: drift 18s ease-in-out infinite alternate;
+  animation: ieop-drift 18s ease-in-out infinite alternate;
   pointer-events: none;
-}
-
-@keyframes drift {
-  from {
-    transform: translate(-130px, -80px);
-  }
-  to {
-    transform: translate(120px, 90px);
-  }
 }
 
 /* grade sutil mascarada */
@@ -82,18 +73,8 @@
   height: 8px;
   border-radius: 50%;
   opacity: 0.85;
-  animation: float 7s ease-in-out infinite;
+  animation: ieop-float 7s ease-in-out infinite;
   box-shadow: 0 0 10px currentColor;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
 }
 
 /* herói: eyebrow + headline + gauge + legenda */
@@ -436,7 +417,7 @@
   color: var(--color-danger);
   font-size: var(--text-sm);
   line-height: 1.5;
-  animation: shake 360ms ease;
+  animation: ieop-shake 360ms ease;
 }
 
 .infoNote {
@@ -450,21 +431,6 @@
   color: var(--color-text-secondary);
   font-size: var(--text-xs);
   line-height: 1.5;
-}
-
-@keyframes shake {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  20%,
-  60% {
-    transform: translateX(-4px);
-  }
-  40%,
-  80% {
-    transform: translateX(4px);
-  }
 }
 
 .fieldError {
@@ -544,19 +510,7 @@
   border-radius: 50%;
   background: var(--color-success);
   box-shadow: 0 0 0 0 rgba(29, 158, 117, 0.5);
-  animation: pulse 2.4s ease-out infinite;
-}
-
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(29, 158, 117, 0.5);
-  }
-  70% {
-    box-shadow: 0 0 0 7px rgba(29, 158, 117, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(29, 158, 117, 0);
-  }
+  animation: ieop-pulse 2.4s ease-out infinite;
 }
 
 .foot {

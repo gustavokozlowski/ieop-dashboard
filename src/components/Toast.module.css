@@ -20,7 +20,7 @@
   font-size: var(--text-sm);
   min-width: 280px;
   max-width: 400px;
-  animation: slideIn 200ms ease-out;
+  animation: ieop-slide-in 200ms ease-out;
   border: 1px solid;
 }
 
@@ -70,7 +70,3 @@
 }
 .closeBtn:hover { opacity: 1; }
 
-@keyframes slideIn {
-  from { transform: translateX(100%); opacity: 0; }
-  to   { transform: translateX(0);    opacity: 1; }
-}

@@ -1,0 +1,13 @@
+/* Hover lift reutilizável para superfícies de "card".
+   Aplicado via `composes: cardHover from "..."` no CSS Module do card.
+   prefers-reduced-motion (index.css) desativa a transição/transform. */
+.cardHover {
+  transition: box-shadow var(--transition-base), border-color var(--transition-base),
+    transform var(--transition-base);
+}
+
+.cardHover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-surface2);
+}

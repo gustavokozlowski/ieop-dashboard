@@ -1,5 +1,5 @@
 import "./index.css";
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { LoginPage } from "./auth/LoginPage";
 import { PrivateRoute } from "./auth/PrivateRoute";
@@ -7,23 +7,31 @@ import { RagRoute } from "./auth/RagRoute";
 import { RegisterPage } from "./auth/RegisterPage";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { LoadingSpinner } from "./components/LoadingSpinner";
+import { lazyWithReload } from "./components/lazyWithReload";
 
 // Code-splitting por rota: mantém fora do bundle inicial as deps pesadas
 // (recharts no dashboard/perfil, leaflet no mapa/detalhe, deck.gl no 3D, chat).
 // Login/cadastro ficam eager por serem a entrada de quem não está autenticado.
-const Dashboard = lazy(() => import("./pages/Dashboard").then((m) => ({ default: m.Dashboard })));
-const ObrasPage = lazy(() => import("./pages/ObrasPage").then((m) => ({ default: m.ObrasPage })));
-const ObraDetalhePage = lazy(() =>
+// lazyWithReload recarrega 1x se um chunk antigo sumir após um deploy.
+const Dashboard = lazyWithReload(() =>
+  import("./pages/Dashboard").then((m) => ({ default: m.Dashboard })),
+);
+const ObrasPage = lazyWithReload(() =>
+  import("./pages/ObrasPage").then((m) => ({ default: m.ObrasPage })),
+);
+const ObraDetalhePage = lazyWithReload(() =>
   import("./pages/ObraDetalhePage").then((m) => ({ default: m.ObraDetalhePage })),
 );
-const FornecedoresPage = lazy(() =>
+const FornecedoresPage = lazyWithReload(() =>
   import("./pages/FornecedoresPage").then((m) => ({ default: m.FornecedoresPage })),
 );
-const FornecedorPerfilPage = lazy(() =>
+const FornecedorPerfilPage = lazyWithReload(() =>
   import("./pages/FornecedorPerfilPage").then((m) => ({ default: m.FornecedorPerfilPage })),
 );
-const MapaPage = lazy(() => import("./pages/MapaPage").then((m) => ({ default: m.MapaPage })));
-const Mapa3DPage = lazy(() =>
+const MapaPage = lazyWithReload(() =>
+  import("./pages/MapaPage").then((m) => ({ default: m.MapaPage })),
+);
+const Mapa3DPage = lazyWithReload(() =>
   import("./pages/Mapa3DPage").then((m) => ({ default: m.Mapa3DPage })),
 );
 

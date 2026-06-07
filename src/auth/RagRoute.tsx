@@ -1,11 +1,14 @@
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 import { LoadingSpinner } from "../components/LoadingSpinner";
+import { lazyWithReload } from "../components/lazyWithReload";
 import { PageLayout } from "../components/PageLayout";
 import { useAuthContext } from "./AuthContext";
 import { canUseRAG } from "./permissions";
 
 // O chat (markdown/streaming) só carrega para quem tem acesso ao RAG.
-const ChatPage = lazy(() => import("../pages/ChatPage").then((m) => ({ default: m.ChatPage })));
+const ChatPage = lazyWithReload(() =>
+  import("../pages/ChatPage").then((m) => ({ default: m.ChatPage })),
+);
 
 // Guarda a rota /ia: só perfis com permissão (admin/gestor) acessam o RAG.
 // readonly recebe uma mensagem de acesso restrito (não a tela do chat).

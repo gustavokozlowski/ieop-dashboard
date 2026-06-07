@@ -1,6 +1,8 @@
 streamlit>=1.35.0
 plotly>=5.22.0
-pandas>=2.2.0
+# <3.0 até a passada de Copy-on-Write: o código já usa .copy(), mas o pandas 3.0
+# muda a semântica de chained assignment (ver FutureWarnings nas páginas).
+pandas>=2.2,<3.0
 numpy>=1.26.0
 supabase>=2.4.0
 python-dotenv>=1.0.0

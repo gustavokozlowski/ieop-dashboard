@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { BadgeVariant } from "../components/Badge";
 import { Badge } from "../components/Badge";
+import { EmptyHint } from "../components/EmptyHint";
 import { Footer } from "../components/Footer";
 import { IEOPBadge } from "../components/IEOPBadge";
 import { DownloadIcon } from "../components/icons";
@@ -31,11 +32,6 @@ const STATUS_VARIANT: Record<ObraStatus, BadgeVariant> = {
   nao_iniciada: "neutral",
   cancelada: "danger",
 };
-
-// Fallback discreto para células sem dado, no lugar do "—" cru.
-function semDado(texto: string) {
-  return <span style={{ color: "var(--color-text-muted)", fontStyle: "italic" }}>{texto}</span>;
-}
 
 const COLUMNS: Column<ObraListItem>[] = [
   {
@@ -87,7 +83,7 @@ const COLUMNS: Column<ObraListItem>[] = [
     sortable: true,
     render: (v) => {
       const b = String(v);
-      return b && b !== "—" ? b : semDado("Não informado");
+      return b && b !== "—" ? b : <EmptyHint>Não informado</EmptyHint>;
     },
   },
   {
@@ -155,7 +151,7 @@ const COLUMNS: Column<ObraListItem>[] = [
     sortable: true,
     render: (v) => {
       const d = formatDateShort(String(v));
-      return d && d !== "—" ? d : semDado("Sem previsão");
+      return d && d !== "—" ? d : <EmptyHint>Sem previsão</EmptyHint>;
     },
   },
 ];

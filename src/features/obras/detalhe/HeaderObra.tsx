@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import type { BadgeVariant } from "../../../components/Badge";
 import { Badge } from "../../../components/Badge";
+import { EmptyHint } from "../../../components/EmptyHint";
 import { IEOPBadge } from "../../../components/IEOPBadge";
 import { getIEOPColor } from "../../dashboard/ieop";
 import { STATUS_LABELS } from "../../mapa/types";
@@ -54,9 +55,17 @@ export function HeaderObra({ obra }: HeaderObraProps) {
           </span>
         )}
         <span className={styles.divider} aria-hidden />
-        <span className={styles.secretaria}>{obra.secretaria}</span>
+        {obra.secretaria && obra.secretaria !== "Não informado" ? (
+          <span className={styles.secretaria}>{obra.secretaria}</span>
+        ) : (
+          <EmptyHint>Secretaria não informada</EmptyHint>
+        )}
         <span className={styles.divider} aria-hidden />
-        <span className={styles.contrato}>{obra.numero_contrato}</span>
+        {obra.numero_contrato && obra.numero_contrato !== "—" ? (
+          <span className={styles.contrato}>{obra.numero_contrato}</span>
+        ) : (
+          <EmptyHint>Sem nº de contrato</EmptyHint>
+        )}
       </div>
     </div>
   );

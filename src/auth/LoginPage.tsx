@@ -110,9 +110,6 @@ export function LoginPage() {
                 <label htmlFor="password" className={styles.label}>
                   Senha
                 </label>
-                <Link to="/login" className={styles.link}>
-                  Esqueci a senha
-                </Link>
               </div>
               <div className={`${styles.inputWrap} ${errors.password ? styles.errorWrap : ""}`}>
                 <span className={styles.inputIcon}>
@@ -168,7 +165,7 @@ export function LoginPage() {
           <p className={styles.foot}>
             Não tem conta?{" "}
             <Link to="/register" className={styles.footLink}>
-              Solicite acesso
+              Criar conta
             </Link>
           </p>
         </div>

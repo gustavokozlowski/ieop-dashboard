@@ -9,6 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { ChartEmpty } from "../../dashboard/ChartEmpty";
 import { ChartSkeleton } from "../../dashboard/Skeleton";
 import type { ValorPorAno } from "./types";
 
@@ -40,8 +41,14 @@ interface ValorAnualChartProps {
 }
 
 export function ValorAnualChart({ data, isLoading }: ValorAnualChartProps) {
-  if (isLoading || !data || data.length === 0)
-    return <ChartSkeleton title="Valor contratado por ano" />;
+  if (isLoading) return <ChartSkeleton title="Valor contratado por ano" />;
+  if (!data || data.length === 0)
+    return (
+      <ChartEmpty
+        title="Valor contratado por ano"
+        message="Sem histórico anual disponível para este fornecedor."
+      />
+    );
 
   const sorted = [...data].sort((a, b) => a.ano - b.ano);
 

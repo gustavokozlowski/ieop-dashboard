@@ -8,6 +8,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { ChartEmpty } from "../../dashboard/ChartEmpty";
 import { formatMes } from "../../dashboard/formatters";
 import { ChartSkeleton } from "../../dashboard/Skeleton";
 import type { EvolucaoRisco } from "./types";
@@ -32,7 +33,14 @@ interface RiscoEvolutionChartProps {
 }
 
 export function RiscoEvolutionChart({ data, isLoading }: RiscoEvolutionChartProps) {
-  if (isLoading || !data || data.length === 0) return <ChartSkeleton title="Evolução de risco" />;
+  if (isLoading) return <ChartSkeleton title="Evolução de risco" />;
+  if (!data || data.length === 0)
+    return (
+      <ChartEmpty
+        title="Evolução de risco"
+        message="Sem histórico de risco disponível para este fornecedor."
+      />
+    );
 
   const sorted = [...data]
     .sort((a, b) => a.periodo.localeCompare(b.periodo))

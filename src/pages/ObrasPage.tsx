@@ -32,6 +32,11 @@ const STATUS_VARIANT: Record<ObraStatus, BadgeVariant> = {
   cancelada: "danger",
 };
 
+// Fallback discreto para células sem dado, no lugar do "—" cru.
+function semDado(texto: string) {
+  return <span style={{ color: "var(--color-text-muted)", fontStyle: "italic" }}>{texto}</span>;
+}
+
 const COLUMNS: Column<ObraListItem>[] = [
   {
     key: "nome",
@@ -76,7 +81,15 @@ const COLUMNS: Column<ObraListItem>[] = [
       </span>
     ),
   },
-  { key: "bairro", header: "Bairro", sortable: true },
+  {
+    key: "bairro",
+    header: "Bairro",
+    sortable: true,
+    render: (v) => {
+      const b = String(v);
+      return b && b !== "—" ? b : semDado("Não informado");
+    },
+  },
   {
     key: "status",
     header: "Status",
@@ -140,7 +153,10 @@ const COLUMNS: Column<ObraListItem>[] = [
     key: "previsao_termino",
     header: "Previsão término",
     sortable: true,
-    render: (v) => formatDateShort(String(v)),
+    render: (v) => {
+      const d = formatDateShort(String(v));
+      return d && d !== "—" ? d : semDado("Sem previsão");
+    },
   },
 ];
 

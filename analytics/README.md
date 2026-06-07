@@ -16,7 +16,7 @@ consomem os mesmos dados. Rodar uma **não** exige rodar a outra.
 ## Instalação e execução
 
 ```bash
-cd streamlit
+cd analytics
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
@@ -31,20 +31,20 @@ Dependências (`requirements.txt`): `streamlit`, `plotly`, `pandas`, `numpy`,
 ## Fonte de dados e modo de exemplo
 
 O módulo [`db.py`](db.py) carrega o `.env` da **raiz do projeto**
-(`my-dash/.env`) independentemente do diretório atual, sem sobrescrever
-variáveis já presentes no ambiente.
+independentemente do diretório atual, sem sobrescrever variáveis já presentes
+no ambiente.
 
 | Variável | Uso |
 |----------|-----|
 | `SUPABASE_URL` | URL do projeto Supabase |
 | `SUPABASE_ANON_KEY` | chave anônima do Supabase |
-| `API_URL` | URL do backend (exibida na home) |
+| `API_URL` | URL do backend (uso server-side; não exibida na UI) |
 
 **Comportamento defensivo:** se o Supabase não estiver configurado (ou a
 consulta falhar), o app **cai para dados de exemplo** gerados localmente com
-`numpy` — nunca quebra. A home (`app.py`) mostra o status da conexão
-(`✅ Supabase conectado` ou `⚠️ usando dados de exemplo`), e cada página exibe
-um banner quando está em modo de amostra.
+`numpy` — nunca quebra. A home (`app.py`) indica a **origem dos dados**
+(`✅ Conectado à base — dados reais` ou `⚠️ dados de exemplo`), sem expor URLs,
+e cada página exibe um banner quando está em modo de amostra.
 
 ### `db.py` — utilitários compartilhados
 
@@ -52,8 +52,8 @@ um banner quando está em modo de amostra.
 - `fetch(table, columns, limit)` — consulta uma tabela e retorna um
   `DataFrame` (vazio se não configurado); cacheado por 5 min (`@st.cache_data`).
 - `notice_sample()` — banner de "dados de exemplo".
-- `sample_predicoes()` / `sample_features()` — geradores determinísticos
-  (seed fixa) de dados de amostra para predições e importância de features.
+- `sample_predicoes()` / `sample_obras()` — geradores determinísticos
+  (seed fixa) de dados de amostra para predições e obras.
 - `PLOTLY_LAYOUT`, `RISK_COLORSCALE`, `STATUS_LABELS` — tema escuro e rótulos
   alinhados ao design do app React.
 

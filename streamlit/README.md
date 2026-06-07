@@ -69,10 +69,8 @@ lateral, ordenados pelo prefixo numérico do nome.
 | Arquivo | Título | Conteúdo |
 |---------|--------|----------|
 | `pages/01_Predições.py` | 🌡️ Mapa de Calor de Risco | risco por secretaria × status |
-| `pages/02_Features.py` | 📊 Importância de Features (XGBoost) | ranking de features do modelo |
 | `pages/03_Fornecedores.py` | 🏢 Risco × Recorrência | scatter por fornecedor |
 | `pages/04_Evolução.py` | 📈 Evolução Temporal das Predições | série temporal de risco |
-| `pages/05_Comparativo.py` | ⚖️ Execução Real vs Prevista | desvio de execução |
 | `pages/06_IEOP_3D.py` | 🧊 IEOP 3D | dispersão 3D custo × atraso × IEOP |
 
 > Os nomes dos arquivos definem o rótulo e a ordem na barra lateral; por isso

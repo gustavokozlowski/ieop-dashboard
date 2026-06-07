@@ -215,14 +215,13 @@ Conjunto IEOP / ML (destacado na home):
 | Página | Conteúdo |
 |--------|----------|
 | 🌡️ Predições | mapa de calor de risco por secretaria × status |
-| 📊 Features | importância das features do modelo XGBoost |
 | 🏢 Fornecedores | scatter risco × recorrência por fornecedor |
 | 📈 Evolução | evolução temporal das predições de risco |
-| ⚖️ Comparativo | execução real vs. prevista (desvio) |
 | 🧊 IEOP 3D | dispersão 3D custo × atraso × IEOP |
 
-Todas as páginas (`pages/01..06`) são do conjunto IEOP/ML — as páginas-demo do
-template (Métricas, Mapa de Usuários) foram removidas.
+As páginas Features e Comparativo foram removidas por não terem fonte de
+dados real (o modelo não publica `feature_importance` nem execução real ×
+prevista).
 
 ---
 

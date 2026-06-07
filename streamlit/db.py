@@ -236,34 +236,6 @@ def load_predicoes() -> pd.DataFrame:
     )
 
 
-def sample_features(seed: int = 42) -> pd.DataFrame:
-    features = [
-        ("atraso_historico_fornecedor", "Histórico de atrasos do fornecedor"),
-        ("complexidade_obra", "Índice de complexidade técnica"),
-        ("valor_contratado_log", "Log do valor contratado (R$)"),
-        ("n_aditivos_anteriores", "Nº de aditivos em obras anteriores"),
-        ("dias_desde_inicio", "Dias corridos desde o início"),
-        ("chuva_acumulada_30d", "Chuva acumulada últimos 30 dias"),
-        ("execucao_percentual", "Percentual de execução atual"),
-        ("orcamento_desvio_pct", "Desvio percentual do orçamento"),
-        ("secretaria_encoded", "Secretaria responsável (encoded)"),
-        ("tipo_obra_encoded", "Tipo de obra (encoded)"),
-        ("n_funcionarios", "Nº de funcionários alocados"),
-        ("dias_para_termino", "Dias restantes até previsão de término"),
-        ("fornecedor_obras_ativas", "Obras ativas simultâneas do fornecedor"),
-        ("bairro_risco_index", "Índice de risco do bairro"),
-        ("equipe_fiscalizacao", "Tamanho da equipe de fiscalização"),
-    ]
-    rng = np.random.default_rng(seed)
-    names, descs = zip(*features, strict=False)
-    imp = rng.dirichlet(np.array([6, 5, 4, 4, 3, 2, 3, 2, 1.5, 1.5, 1, 1, 2, 1, 1]))
-    return (
-        pd.DataFrame({"feature_name": names, "descricao": descs, "importance": imp.round(5)})
-        .sort_values("importance", ascending=False)
-        .reset_index(drop=True)
-    )
-
-
 def sample_obras(n: int = 400, seed: int = 42) -> pd.DataFrame:
     """Amostra de obras com IEOP, custo e atraso — base do scatter 3D."""
     rng = np.random.default_rng(seed)

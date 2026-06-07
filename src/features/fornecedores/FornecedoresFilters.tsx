@@ -1,3 +1,4 @@
+import { SearchIcon } from "../../components/icons";
 import { RISCO_LABELS } from "../mapa/types";
 import styles from "./FornecedoresFilters.module.css";
 import type { FornecedoresFilter, RiscoNivel } from "./types";
@@ -23,7 +24,7 @@ export function FornecedoresFilters({
     <div className={styles.panel} role="search" aria-label="Filtros de fornecedores">
       <div className={styles.searchWrapper}>
         <span className={styles.searchIcon} aria-hidden>
-          ⌕
+          <SearchIcon />
         </span>
         <input
           type="search"

@@ -17,11 +17,12 @@ st.markdown("Selecione uma página no menu lateral para explorar as visualizaç�
 
 st.divider()
 
-cols = st.columns(3)
+cols = st.columns(4)
 pages = [
     ("🌡️", "Predições", "Mapa de calor de risco por secretaria e status"),
     ("🏢", "Fornecedores", "Scatter risco × recorrência por fornecedor"),
     ("📈", "Evolução", "Evolução temporal das predições de risco"),
+    ("🧊", "IEOP 3D", "Dispersão 3D: custo × atraso × IEOP"),
 ]
 
 for col, (icon, title, desc) in zip(cols, pages, strict=False):

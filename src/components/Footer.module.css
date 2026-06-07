@@ -3,11 +3,13 @@
   position: relative;
   /* auto: numa coluna flex (.content), empurra o rodapé para o fim da página. */
   margin-top: auto;
-  padding: 26px 20px 22px;
+  width: 100%;
+  padding: 14px 20px 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 9px;
+  text-align: center;
+  gap: 5px;
   border-top: 1px solid var(--color-border);
   overflow: hidden;
 }
@@ -19,8 +21,8 @@
   left: 50%;
   top: 46%;
   transform: translate(-50%, -50%);
-  width: 340px;
-  height: 120px;
+  width: 300px;
+  height: 76px;
   pointer-events: none;
   background: radial-gradient(
     ellipse at center,
@@ -61,7 +63,7 @@
 .name {
   position: relative;
   z-index: 1;
-  font-size: 1.55rem;
+  font-size: 1.15rem;
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1;

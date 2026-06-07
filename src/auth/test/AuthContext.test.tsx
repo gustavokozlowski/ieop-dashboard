@@ -24,10 +24,10 @@ const refreshTokens = mock(async () => {
   throw new Error("sem sessão");
 });
 
-mock.module("../services/auth", () => ({ loginUser, getMe, registerUser, refreshTokens }));
+mock.module("../../services/auth", () => ({ loginUser, getMe, registerUser, refreshTokens }));
 
 // Import dinâmico após o mock — garante que o AuthContext use os mocks.
-const { AuthProvider, useAuthContext } = await import("./AuthContext");
+const { AuthProvider, useAuthContext } = await import("../AuthContext");
 
 function Harness() {
   const { isAuthenticated, isLoading, user, login, logout } = useAuthContext();

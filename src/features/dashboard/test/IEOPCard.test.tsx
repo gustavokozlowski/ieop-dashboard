@@ -1,8 +1,8 @@
 import { describe, expect, it } from "bun:test";
 import { render, screen } from "@testing-library/react";
-import type { IEOPStats } from "../../schemas/ieop.schema";
-import { IEOPCard } from "./IEOPCard";
-import { IEOPDistribuicao } from "./IEOPDistribuicao";
+import type { IEOPStats } from "../../../schemas/ieop.schema";
+import { IEOPCard } from "../IEOPCard";
+import { IEOPDistribuicao } from "../IEOPDistribuicao";
 
 const STATS: IEOPStats = {
   media_geral: 63.4,

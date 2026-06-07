@@ -2,8 +2,8 @@ import { afterEach, describe, expect, it, spyOn } from "bun:test";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { renderHook, waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
-import { apiClient } from "../services/api";
-import { useApi } from "./useApi";
+import { apiClient } from "../../services/api";
+import { useApi } from "../useApi";
 
 function makeWrapper() {
   const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });

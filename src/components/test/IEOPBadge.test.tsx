@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
 import { render, screen } from "@testing-library/react";
-import { IEOP_COLORS } from "../features/dashboard/ieop";
-import { IEOPBadge } from "./IEOPBadge";
+import { IEOP_COLORS } from "../../features/dashboard/ieop";
+import { IEOPBadge } from "../IEOPBadge";
 
 describe("IEOPBadge", () => {
   it("renderiza 'Ótimo' com a cor da classe", () => {

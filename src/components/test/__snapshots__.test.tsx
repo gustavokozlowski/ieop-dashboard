@@ -1,8 +1,8 @@
 import { describe, expect, it } from "bun:test";
 import { render } from "@testing-library/react";
-import { Badge } from "./Badge";
-import { Card } from "./Card";
-import { LoadingSpinner } from "./LoadingSpinner";
+import { Badge } from "../Badge";
+import { Card } from "../Card";
+import { LoadingSpinner } from "../LoadingSpinner";
 
 // Snapshot tests dos componentes de apresentação principais.
 describe("snapshots", () => {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { buildNav } from "./nav";
+import { buildNav } from "../nav";
 
 function paths(perfil: Parameters<typeof buildNav>[0]) {
   return buildNav(perfil).flatMap((g) => g.items.map((i) => i.path));

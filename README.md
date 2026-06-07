@@ -384,8 +384,8 @@ Base: `BUN_PUBLIC_API_URL` (ou `/proxy` em dev).
 - Runner: **`bun test`** + **React Testing Library** + **happy-dom**.
 - Preloads (`bunfig.toml`): `test/happydom.ts` (registra o DOM) e
   `test/setup.ts` (matchers do jest-dom + cleanup).
-- Testes co-localizados como `*.test.ts(x)` ao lado do código; snapshots em
-  `__snapshots__/`.
+- Testes agrupados por módulo em `<módulo>/test/` (ex.: `src/auth/test/`,
+  `src/components/test/`); snapshots em `test/__snapshots__/`.
 
 ```bash
 bun test

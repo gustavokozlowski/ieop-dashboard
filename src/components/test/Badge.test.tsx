@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { render, screen } from "@testing-library/react";
-import { Badge } from "./Badge";
+import { Badge } from "../Badge";
 
 describe("Badge", () => {
   it("renderiza o label fornecido", () => {

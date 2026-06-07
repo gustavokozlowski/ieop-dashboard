@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { render, screen } from "@testing-library/react";
-import { Card } from "./Card";
+import { Card } from "../Card";
 
 describe("Card", () => {
   it("renderiza título e valor", () => {

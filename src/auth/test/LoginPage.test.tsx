@@ -24,10 +24,10 @@ const refreshTokens = mock(async () => {
   throw new Error("sem sessão");
 });
 
-mock.module("../services/auth", () => ({ loginUser, getMe, registerUser, refreshTokens }));
+mock.module("../../services/auth", () => ({ loginUser, getMe, registerUser, refreshTokens }));
 
-const { AuthProvider } = await import("./AuthContext");
-const { LoginPage } = await import("./LoginPage");
+const { AuthProvider } = await import("../AuthContext");
+const { LoginPage } = await import("../LoginPage");
 
 function renderLogin() {
   return render(

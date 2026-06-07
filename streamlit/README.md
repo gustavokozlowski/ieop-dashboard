@@ -69,9 +69,9 @@ lateral, ordenados pelo prefixo numérico do nome.
 | Arquivo | Título | Conteúdo |
 |---------|--------|----------|
 | `pages/01_Predições.py` | 🌡️ Mapa de Calor de Risco | risco por secretaria × status |
-| `pages/03_Fornecedores.py` | 🏢 Risco × Recorrência | scatter por fornecedor |
-| `pages/04_Evolução.py` | 📈 Evolução Temporal das Predições | série temporal de risco |
-| `pages/06_IEOP_3D.py` | 🧊 IEOP 3D | dispersão 3D custo × atraso × IEOP |
+| `pages/02_Fornecedores.py` | 🏢 Risco × Recorrência | scatter por fornecedor |
+| `pages/03_Evolução.py` | 📈 Evolução Temporal das Predições | série temporal de risco |
+| `pages/04_IEOP_3D.py` | 🧊 IEOP 3D | dispersão 3D custo × atraso × IEOP |
 
 > Os nomes dos arquivos definem o rótulo e a ordem na barra lateral; por isso
 > usam Title Case com acento (ex.: "Predições", "Evolução").

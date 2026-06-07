@@ -71,6 +71,15 @@ svg {
   }
 }
 
+/* Spin global: keyframes definidos DENTRO de CSS Modules são hasheados pelo Bun,
+   mas a referência `animation: nome` não é reescrita — a animação some. Manter
+   os keyframes aqui (global, sem hash) faz a referência resolver. */
+@keyframes ieop-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   ::before,

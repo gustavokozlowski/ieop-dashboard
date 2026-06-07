@@ -7,7 +7,8 @@
   </defs>
   <rect width="32" height="32" rx="8" fill="url(#g)"></rect>
   <rect x="0.5" y="0.5" width="31" height="31" rx="7.5" fill="none" stroke="#ffffff" stroke-opacity="0.12"></rect>
-  <path d="M7 22 L13.2 16 L18 19.2 L25 9.5" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path>
-  <circle cx="25" cy="9.5" r="2.4" fill="#ffffff"></circle>
-  <circle cx="7" cy="22" r="1.6" fill="#ffffff" fill-opacity="0.6"></circle>
+  <!-- Phosphor ChartLineUp (viewBox 0 0 256 256), escalado p/ 20px e centralizado -->
+  <g transform="translate(6 6) scale(0.078125)" fill="#ffffff">
+    <path d="M232,208a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V48a8,8,0,0,1,16,0V156.69l50.34-50.35a8,8,0,0,1,11.32,0L128,132.69,180.69,80H160a8,8,0,0,1,0-16h40a8,8,0,0,1,8,8v40a8,8,0,0,1-16,0V91.31l-58.34,58.35a8,8,0,0,1-11.32,0L96,123.31l-56,56V200H224A8,8,0,0,1,232,208Z"></path>
+  </g>
 </svg>

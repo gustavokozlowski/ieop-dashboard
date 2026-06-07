@@ -154,8 +154,10 @@ export function RegisterPage() {
             </div>
 
             <div className={styles.infoNote} role="note">
-              <span aria-hidden>ℹ️</span> Sua conta é criada com perfil <b>Somente leitura</b>.
-              Acessos de Gestor/Administrador são concedidos por um administrador.
+              <span aria-hidden>ℹ️</span>
+              <span>
+                Conta criada como <b>Somente leitura</b> — perfis elevados só por um admin.
+              </span>
             </div>
 
             <div className={styles.fieldRow}>

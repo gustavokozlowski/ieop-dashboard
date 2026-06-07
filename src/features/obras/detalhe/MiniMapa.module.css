@@ -20,6 +20,18 @@
   height: 200px;
 }
 
+.placeholder {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-5);
+  background: var(--color-surface2);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
 .address {
   padding: var(--space-3) var(--space-5);
   font-size: var(--text-xs);

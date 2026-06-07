@@ -1,6 +1,6 @@
-# IEOP — Índice de Eficiência de Obras Públicas (RJ)
+# IEOP — Índice de Eficiência de Obras Públicas (Macaé/RJ)
 
-Dashboard analítico de eficiência de obras públicas no estado do Rio de Janeiro,
+Dashboard analítico de eficiência de obras públicas no município de Macaé/RJ,
 com dados do Portal de Dados Abertos ([dados.gov.br](https://dados.gov.br)).
 
 O **IEOP** é um indicador quantitativo (0–100) que avalia a eficiência de obras

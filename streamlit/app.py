@@ -12,7 +12,7 @@ st.set_page_config(
     layout="wide",
 )
 
-st.title("🏗️ IEOP — Índice de Eficiência de Obras Públicas (RJ)")
+st.title("🏗️ IEOP — Índice de Eficiência de Obras Públicas (Macaé/RJ)")
 st.markdown("Selecione uma página no menu lateral para explorar as visualizações de ML.")
 
 st.divider()

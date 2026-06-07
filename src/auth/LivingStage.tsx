@@ -50,7 +50,7 @@ export function LivingStage({ headline }: { headline: ReactNode }) {
 
       <div className={styles.hero}>
         <div>
-          <div className={styles.eyebrow}>Estado do Rio de Janeiro</div>
+          <div className={styles.eyebrow}>Macaé · Rio de Janeiro</div>
           <h1 className={styles.headline}>{headline}</h1>
         </div>
         <div className={styles.gaugeRow}>
@@ -86,7 +86,7 @@ export function LivingStage({ headline }: { headline: ReactNode }) {
           <span className={styles.statNum} style={{ color: "var(--ieop-bom)" }}>
             68,9
           </span>
-          <span className={styles.statLbl}>IEOP médio do estado</span>
+          <span className={styles.statLbl}>IEOP médio do município</span>
         </div>
         <div className={styles.stat}>
           <span className={styles.statNum} style={{ color: "var(--color-danger)" }}>

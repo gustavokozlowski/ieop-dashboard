@@ -247,6 +247,9 @@
   width: 100%;
   max-width: 400px;
   margin: 0 auto;
+  /* Entrada suave do formulário ao carregar (login/cadastro não passam pelo
+     PageLayout). Keyframe global; prefers-reduced-motion desativa. */
+  animation: ieop-fade-up var(--motion-enter-section) var(--ease-out) both;
 }
 
 /* lockup de marca no topo da box */

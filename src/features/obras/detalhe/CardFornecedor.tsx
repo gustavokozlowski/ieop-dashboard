@@ -12,6 +12,8 @@ function maskCnpj(cnpj: string): string {
 }
 
 export function CardFornecedor({ fornecedor }: CardFornecedorProps) {
+  const cnpjInformado = fornecedor.cnpj.replace(/\D/g, "").length > 0;
+
   return (
     <div className={styles.card}>
       <p className={styles.title}>Fornecedor</p>
@@ -19,7 +21,9 @@ export function CardFornecedor({ fornecedor }: CardFornecedorProps) {
 
       <div className={styles.row}>
         <span className={styles.rowLabel}>CNPJ</span>
-        <span className={`${styles.rowValue} ${styles.cnpj}`}>{maskCnpj(fornecedor.cnpj)}</span>
+        <span className={`${styles.rowValue} ${cnpjInformado ? styles.cnpj : ""}`}>
+          {cnpjInformado ? maskCnpj(fornecedor.cnpj) : "Não informado"}
+        </span>
       </div>
 
       {fornecedor.email && (

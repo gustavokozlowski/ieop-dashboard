@@ -107,20 +107,6 @@ export const Mapa3DIcon = (p: SVGProps<SVGSVGElement>) => (
 );
 
 // ── UI ──
-export const SearchIcon = (p: SVGProps<SVGSVGElement>) => (
-  <svg {...box(p)}>
-    <circle cx="11" cy="11" r="7" />
-    <path d="m20 20-3.2-3.2" />
-  </svg>
-);
-
-export const BellIcon = (p: SVGProps<SVGSVGElement>) => (
-  <svg {...box(p)}>
-    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
-    <path d="M13.7 21a2 2 0 0 1-3.4 0" />
-  </svg>
-);
-
 export const LogoutIcon = (p: SVGProps<SVGSVGElement>) => (
   <svg {...box(p)}>
     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />

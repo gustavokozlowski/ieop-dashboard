@@ -1,3 +1,22 @@
+/* Entrada escalonada das seções (cascata de cima p/ baixo). O delay cria o
+   efeito de stagger; prefers-reduced-motion zera tudo (ver index.css). */
+.gridHero,
+.gridMetrics,
+.gridTwo,
+.gridCharts {
+  animation: ieop-fade-up var(--motion-enter-section) var(--ease-out) both;
+}
+
+.gridMetrics {
+  animation-delay: 70ms;
+}
+.gridTwo {
+  animation-delay: 140ms;
+}
+.gridCharts {
+  animation-delay: 210ms;
+}
+
 /* Herói IEOP — gauge largo + distribuição */
 .gridHero {
   display: grid;

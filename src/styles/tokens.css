@@ -80,4 +80,9 @@
   /* Transitions */
   --transition-fast: 120ms ease;
   --transition-base: 200ms ease;
+
+  /* Motion: easing suave de entrada (overshoot leve) e durações de animação */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-enter: 240ms;
+  --motion-enter-section: 380ms;
 }

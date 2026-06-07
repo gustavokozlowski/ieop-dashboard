@@ -5,12 +5,14 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  transition: box-shadow var(--transition-base), border-color var(--transition-base);
+  transition: box-shadow var(--transition-base), border-color var(--transition-base),
+    transform var(--transition-base);
 }
 
 .card:hover {
   box-shadow: var(--shadow-md);
   border-color: var(--color-surface2);
+  transform: translateY(-2px);
 }
 
 /* topo: ícone (esquerda) + delta (direita) */

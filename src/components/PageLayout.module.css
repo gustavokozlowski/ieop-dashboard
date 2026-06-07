@@ -314,6 +314,8 @@
   flex: 1;
   padding: 24px 28px 40px;
   min-width: 0;
+  /* Entrada suave ao montar/navegar (PageLayout remonta por página). */
+  animation: ieop-fade-in var(--motion-enter) var(--ease-out) both;
 }
 
 /* ── Tablet (768–1024): mantém sidebar, reduz paddings ── */

@@ -30,19 +30,8 @@ for col, (icon, title, desc) in zip(cols, pages, strict=False):
 
 st.divider()
 
-status_col, api_col, sb_col = st.columns(3)
-
-with status_col:
-    configured = db.is_configured()
-    if configured:
-        st.success("✅ Supabase conectado")
-    else:
-        st.warning("⚠️ Supabase não configurado — usando dados de exemplo")
-
-with api_col:
-    api = os.getenv("API_URL", "não configurado")
-    st.info(f"**API:** `{api}`")
-
-with sb_col:
-    url = os.getenv("SUPABASE_URL", "não configurado")
-    st.info(f"**Supabase URL:** `{url[:40]}…`" if len(url) > 40 else f"**Supabase URL:** `{url}`")
+# Apenas a origem dos dados (real vs. exemplo). Não expõe URLs/infra na UI.
+if db.is_configured():
+    st.success("✅ Conectado à base — exibindo dados reais.")
+else:
+    st.warning("⚠️ Base não configurada — exibindo dados de exemplo.")

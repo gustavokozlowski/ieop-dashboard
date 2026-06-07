@@ -1,7 +1,15 @@
 import type { ReactNode } from "react";
-import { canUseRAG } from "../auth/permissions";
+import { canManageUsers, canUseRAG } from "../auth/permissions";
 import type { Perfil } from "../schemas/auth.schema";
-import { DashboardIcon, FornecedoresIcon, IAIcon, Mapa3DIcon, MapaIcon, ObrasIcon } from "./icons";
+import {
+  DashboardIcon,
+  FornecedoresIcon,
+  IAIcon,
+  Mapa3DIcon,
+  MapaIcon,
+  ObrasIcon,
+  UsersIcon,
+} from "./icons";
 
 export interface NavItem {
   path: string;
@@ -38,6 +46,11 @@ export function buildNav(perfil: Perfil | undefined, counts?: NavCounts): NavGro
 
   if (canUseRAG(perfil)) {
     principal.push({ path: "/ia", label: "Agente IA", icon: IAIcon({}) });
+  }
+
+  // Backoffice: só admin vê e acessa (criação de usuários gestor/admin).
+  if (canManageUsers(perfil)) {
+    principal.push({ path: "/admin", label: "Administração", icon: UsersIcon({}) });
   }
 
   return [

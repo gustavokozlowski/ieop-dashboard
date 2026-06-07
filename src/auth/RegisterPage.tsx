@@ -1,46 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type ReactNode, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { LogoIcon } from "../components/icons";
-import { type Perfil, type RegisterForm, registerSchema } from "../schemas/auth.schema";
+import { type RegisterForm, registerSchema } from "../schemas/auth.schema";
 import { useAuthContext } from "./AuthContext";
 import styles from "./authForm.module.css";
-import {
-  ArrowIcon,
-  CheckIcon,
-  CrownIcon,
-  EyeIcon,
-  EyeOffIcon,
-  LockIcon,
-  MailIcon,
-  ShieldIcon,
-  UserIcon,
-  ViewIcon,
-} from "./authIcons";
+import { ArrowIcon, EyeIcon, EyeOffIcon, LockIcon, MailIcon, UserIcon } from "./authIcons";
 import { LivingStage } from "./LivingStage";
-
-// Perfis reais do backend (auth.schema.ts + permissions.ts).
-const PERFIS: { id: Perfil; name: string; desc: string; icon: ReactNode }[] = [
-  {
-    id: "admin",
-    name: "Administrador",
-    desc: "Acesso total · re-treino ML",
-    icon: <CrownIcon size={17} />,
-  },
-  {
-    id: "gestor",
-    name: "Gestor",
-    desc: "Dashboard e consultas IA",
-    icon: <ShieldIcon size={17} />,
-  },
-  {
-    id: "readonly",
-    name: "Somente leitura",
-    desc: "Apenas visualização",
-    icon: <ViewIcon size={17} />,
-  },
-];
 
 // Medidor de força da senha — espelha o protótipo.
 const STRENGTH = [
@@ -83,15 +50,13 @@ export function RegisterPage() {
   const {
     register,
     handleSubmit,
-    setValue,
     watch,
     formState: { errors, isSubmitting },
   } = useForm<RegisterForm>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { nome: "", email: "", password: "", confirm: "", perfil: "gestor" },
+    defaultValues: { nome: "", email: "", password: "", confirm: "" },
   });
 
-  const perfil = watch("perfil");
   const pw = watch("password");
   const confirm = watch("confirm");
   const score = scorePassword(pw);
@@ -100,7 +65,9 @@ export function RegisterPage() {
   async function onSubmit(values: RegisterForm) {
     setServerError(null);
     try {
-      await registerUser(values.nome.trim(), values.email.trim(), values.password, values.perfil);
+      // Cadastro público cria sempre perfil "Somente leitura" (sem escolha de
+      // perfil). Perfis elevados só pelo backoffice (admin).
+      await registerUser(values.nome.trim(), values.email.trim(), values.password);
       navigate("/", { replace: true });
     } catch (err) {
       setServerError(resolveErrorMessage(err));
@@ -186,33 +153,9 @@ export function RegisterPage() {
               {errors.email && <span className={styles.fieldError}>{errors.email.message}</span>}
             </div>
 
-            <div className={styles.field2}>
-              <span className={styles.label}>Perfil de acesso</span>
-              <div className={styles.perfilGrid} role="radiogroup" aria-label="Perfil de acesso">
-                {PERFIS.map((p) => {
-                  const active = perfil === p.id;
-                  return (
-                    <button
-                      type="button"
-                      key={p.id}
-                      className={`${styles.perfilCard} ${active ? styles.perfilActive : ""}`}
-                      onClick={() => setValue("perfil", p.id, { shouldValidate: true })}
-                      role="radio"
-                      aria-checked={active}
-                    >
-                      {active && (
-                        <span className={styles.perfilCheck}>
-                          <CheckIcon size={11} />
-                        </span>
-                      )}
-                      <span className={styles.perfilIcon}>{p.icon}</span>
-                      <span className={styles.perfilName}>{p.name}</span>
-                      <span className={styles.perfilDesc}>{p.desc}</span>
-                    </button>
-                  );
-                })}
-              </div>
-              {errors.perfil && <span className={styles.fieldError}>{errors.perfil.message}</span>}
+            <div className={styles.infoNote} role="note">
+              <span aria-hidden>ℹ️</span> Sua conta é criada com perfil <b>Somente leitura</b>.
+              Acessos de Gestor/Administrador são concedidos por um administrador.
             </div>
 
             <div className={styles.fieldRow}>

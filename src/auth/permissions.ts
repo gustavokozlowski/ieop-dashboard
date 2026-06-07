@@ -13,6 +13,11 @@ export function canRetrainML(perfil: Perfil | undefined): boolean {
   return perfil === "admin";
 }
 
+/** Só admin acessa o backoffice e cria usuários (gestor/admin). */
+export function canManageUsers(perfil: Perfil | undefined): boolean {
+  return perfil === "admin";
+}
+
 /** Todo perfil autenticado pode visualizar o dashboard e relatórios. */
 export function canView(perfil: Perfil | undefined): boolean {
   return perfil !== undefined;

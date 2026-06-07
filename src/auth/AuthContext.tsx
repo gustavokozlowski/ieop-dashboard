@@ -1,5 +1,5 @@
 import { createContext, type ReactNode, useCallback, useContext, useEffect, useState } from "react";
-import type { Perfil, UserResponse } from "../schemas/auth.schema";
+import type { UserResponse } from "../schemas/auth.schema";
 import { getMe, loginUser, refreshTokens, registerUser } from "../services/auth";
 import { clearTokens, getRefreshToken, setTokens } from "./tokenStore";
 
@@ -16,7 +16,7 @@ interface AuthState {
 
 interface AuthContextValue extends AuthState {
   login: (email: string, password: string) => Promise<void>;
-  register: (nome: string, email: string, password: string, perfil: Perfil) => Promise<void>;
+  register: (nome: string, email: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -85,9 +85,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const register = useCallback(
-    async (nome: string, email: string, password: string, perfil: Perfil) => {
-      // O backend não retorna token no cadastro → cria e faz login em seguida.
-      await registerUser({ nome, email, password, perfil });
+    async (nome: string, email: string, password: string) => {
+      // Cadastro PÚBLICO sempre cria perfil readonly — perfis elevados só pelo
+      // backoffice (admin). O backend não retorna token → cria e loga em seguida.
+      await registerUser({ nome, email, password, perfil: "readonly" });
       await login(email, password);
     },
     [login],

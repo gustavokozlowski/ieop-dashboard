@@ -1,11 +1,19 @@
 import { describe, expect, it } from "bun:test";
-import { canRetrainML, canUseRAG, canView } from "../permissions";
+import { canManageUsers, canRetrainML, canUseRAG, canView } from "../permissions";
 
 describe("permissions", () => {
   it("admin tem acesso total", () => {
     expect(canUseRAG("admin")).toBe(true);
     expect(canRetrainML("admin")).toBe(true);
     expect(canView("admin")).toBe(true);
+    expect(canManageUsers("admin")).toBe(true);
+  });
+
+  it("só admin gerencia usuários (backoffice)", () => {
+    expect(canManageUsers("admin")).toBe(true);
+    expect(canManageUsers("gestor")).toBe(false);
+    expect(canManageUsers("readonly")).toBe(false);
+    expect(canManageUsers(undefined)).toBe(false);
   });
 
   it("gestor acessa dashboard e RAG, mas não re-treina ML", () => {

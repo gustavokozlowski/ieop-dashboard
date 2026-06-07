@@ -1,6 +1,7 @@
 import "./index.css";
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
+import { AdminRoute } from "./auth/AdminRoute";
 import { LoginPage } from "./auth/LoginPage";
 import { PrivateRoute } from "./auth/PrivateRoute";
 import { RagRoute } from "./auth/RagRoute";
@@ -50,6 +51,7 @@ export function App() {
             <Route path="/fornecedores" element={<FornecedoresPage />} />
             <Route path="/fornecedores/:id" element={<FornecedorPerfilPage />} />
             <Route path="/ia" element={<RagRoute />} />
+            <Route path="/admin" element={<AdminRoute />} />
             <Route path="/mapa" element={<MapaPage />} />
             <Route path="/mapa-3d" element={<Mapa3DPage />} />
             <Route path="/*" element={<Dashboard />} />

@@ -15,6 +15,12 @@ describe("buildNav", () => {
     expect(paths("readonly")).not.toContain("/ia");
   });
 
+  it("expõe a Administração (/admin) só para admin", () => {
+    expect(paths("admin")).toContain("/admin");
+    expect(paths("gestor")).not.toContain("/admin");
+    expect(paths("readonly")).not.toContain("/admin");
+  });
+
   it("mantém os itens base independentemente do perfil", () => {
     for (const p of ["admin", "gestor", "readonly"] as const) {
       const ps = paths(p);

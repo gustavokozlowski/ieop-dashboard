@@ -1,7 +1,7 @@
 import os
 import sys
 
-import streamlit as st
+import streamlit as st  # type: ignore
 
 sys.path.insert(0, os.path.dirname(__file__))
 import db  # noqa: E402

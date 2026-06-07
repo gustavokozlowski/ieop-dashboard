@@ -293,16 +293,30 @@ src/
 | `/mapa` | `MapaPage` (Leaflet 2D) | autenticado |
 | `/mapa-3d` | `Mapa3DPage` (deck.gl, lazy) | autenticado |
 | `/ia` | `RagRoute` → `ChatPage` (RAG) | **admin / gestor** |
+| `/admin` | `AdminRoute` → `AdminUsuariosPage` (backoffice) | **admin** |
 
 Perfis (`permissions.ts`):
 
-| Perfil | Visualizar | Usar RAG (IA) | Re-treinar ML |
-|--------|:----------:|:-------------:|:-------------:|
-| `admin`    | ✅ | ✅ | ✅ |
-| `gestor`   | ✅ | ✅ | ❌ |
-| `readonly` | ✅ | ❌ | ❌ |
+| Perfil | Visualizar | Usar RAG (IA) | Re-treinar ML | Gerenciar usuários |
+|--------|:----------:|:-------------:|:-------------:|:------------------:|
+| `admin`    | ✅ | ✅ | ✅ | ✅ |
+| `gestor`   | ✅ | ✅ | ❌ | ❌ |
+| `readonly` | ✅ | ❌ | ❌ | ❌ |
 
-O item "Agente IA" no menu (`nav.ts`) só aparece para perfis com `canUseRAG`.
+Os itens "Agente IA" e "Administração" no menu (`nav.ts`) só aparecem para
+perfis com `canUseRAG` / `canManageUsers`.
+
+### Modelo de cadastro (segurança)
+
+- **Cadastro público** (`/register`) cria **sempre `readonly`** — não há escolha
+  de perfil. `userResponseSchema` faz fallback de perfil inválido para
+  `readonly` (fail-closed / menor privilégio).
+- **Perfis elevados** (gestor/admin) só pelo **backoffice** (`/admin`), exclusivo
+  de admin, que reusa `POST /api/v1/auth/register` com o token do admin anexado.
+
+> ⚠️ A UI **reduz** a superfície, mas a segurança real é do **backend**: o
+> `/register` público deve **forçar `readonly`** e só aceitar perfil elevado com
+> token de admin. Sem isso, dá para burlar chamando a API direto.
 
 ---
 

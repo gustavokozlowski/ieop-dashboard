@@ -89,6 +89,8 @@
   color: var(--color-text-primary);
   border-bottom: 1px solid var(--color-border);
   vertical-align: middle;
+  /* Hover de linha suave (transição em vez de troca instantânea). */
+  transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .table tbody tr:last-child td {
@@ -97,6 +99,11 @@
 
 .table tbody tr:hover td {
   background: var(--color-surface2);
+}
+
+/* Acento à esquerda só em linhas clicáveis (navegam ao clicar). */
+.clickableRow:hover td:first-child {
+  box-shadow: inset 3px 0 0 var(--color-success);
 }
 
 .empty {

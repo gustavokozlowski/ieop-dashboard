@@ -72,10 +72,12 @@ Browser ──► Bun server (:3000) ──► /proxy/* ──► Backend (:8000
 - **TanStack Query 5** — cache e sincronização de dados
 - **Zod 4** — validação em runtime de **todas** as respostas da API
 - **Recharts 3** — gráficos (donut, barras, linha)
-- **Leaflet** + **react-leaflet** + **markercluster** — mapa georreferenciado
+- **Leaflet** + **react-leaflet** + **react-leaflet-cluster** — mapa 2D georreferenciado
+- **deck.gl 9** — mapa 3D, carregado sob demanda (lazy + code-splitting)
 - **React Hook Form** + **@hookform/resolvers** — formulários
 - **axios** — cliente HTTP com interceptors (refresh silencioso, toasts de erro)
 - **CSS Modules** + **design tokens** (`styles/tokens.css`) — tema escuro
+- **Biome** — lint e formatação
 
 ---
 
@@ -124,6 +126,14 @@ bun run build    # gera dist/
 bun start        # NODE_ENV=production
 ```
 
+### Qualidade de código (Biome)
+
+```bash
+bun run lint       # checa lint + formatação
+bun run lint:fix   # aplica correções seguras
+bun run format     # apenas formatação
+```
+
 ---
 
 ## Docker
@@ -135,7 +145,7 @@ escuta na porta **3000** dentro do container.
 ### Build
 
 ```bash
-docker build -t mydash-front .   # a partir de my-dash/
+docker build -t ieop-front .   # a partir da raiz do projeto
 ```
 
 ### Executar
@@ -148,10 +158,10 @@ falando só com `/proxy` (mesma origem), sem CORS.
 com o proxy apontando para o host via `host.docker.internal`:
 
 ```bash
-docker run -d --name mydash -p 3000:3000 \
+docker run -d --name ieop -p 3000:3000 \
   --add-host=host.docker.internal:host-gateway \
   -e API_PROXY_TARGET=http://host.docker.internal:8000 \
-  mydash-front
+  ieop-front
 # acesse http://127.0.0.1:3000
 ```
 
@@ -159,7 +169,7 @@ docker run -d --name mydash -p 3000:3000 \
 backend é alcançado direto em `localhost:8000` (default):
 
 ```bash
-docker run -d --name mydash --network host mydash-front
+docker run -d --name ieop --network host ieop-front
 ```
 
 > No Docker Desktop/WSL2, `--network host` **não** publica a porta no host —
@@ -169,7 +179,7 @@ docker run -d --name mydash --network host mydash-front
 ### Parar
 
 ```bash
-docker rm -f mydash
+docker rm -f ieop
 ```
 
 ---
@@ -194,7 +204,7 @@ pip install -r requirements.txt
 streamlit run app.py         # http://localhost:8501
 ```
 
-Lê o `.env` da raiz (`my-dash/.env`). Com `SUPABASE_URL`/`SUPABASE_ANON_KEY`
+Lê o `.env` da raiz do projeto. Com `SUPABASE_URL`/`SUPABASE_ANON_KEY`
 preenchidos, usa dados reais; senão, **cai para dados de exemplo** gerados
 localmente (não quebra).
 
@@ -246,13 +256,14 @@ src/
 │   └── <SubComponent>.tsx   # componentes presentacionais
 │   ├── dashboard/           # MetricCards, gráficos, IEOPCard, IEOPDistribuicao, ieop.ts
 │   ├── obras/               # filtros, tabela, ExecutionBar, RiskBadge
-│   ├── mapa/                # MacaeMap (Leaflet), markers, popups, geojson
+│   ├── mapa/                # MacaeMap (Leaflet 2D) + Mapa3D (deck.gl), markers, popups, geojson
 │   ├── fornecedores/        # filtros, perfis, alertas
 │   └── chat/                # agente IA (RAG)
 │
 ├── pages/                   # orquestradores: state + hooks + layout
 │   ├── Dashboard.tsx · ObrasPage.tsx · ObraDetalhePage.tsx
-│   ├── MapaPage.tsx · FornecedoresPage.tsx · FornecedorPerfilPage.tsx · ChatPage.tsx
+│   ├── MapaPage.tsx · Mapa3DPage.tsx (deck.gl, lazy) · ChatPage.tsx
+│   ├── FornecedoresPage.tsx · FornecedorPerfilPage.tsx
 │
 ├── schemas/                 # fonte única de tipos: Zod + z.infer
 │   ├── ieop.schema.ts       # IEOPClasse, campos ieop_*, IEOPStats
@@ -279,8 +290,9 @@ src/
 | `/obras/:id` | `ObraDetalhePage` | autenticado |
 | `/fornecedores` | `FornecedoresPage` | autenticado |
 | `/fornecedores/:id` | `FornecedorPerfilPage` | autenticado |
-| `/mapa` | `MapaPage` | autenticado |
-| `/ia` | `RagRoute` → chat RAG | **admin / gestor** |
+| `/mapa` | `MapaPage` (Leaflet 2D) | autenticado |
+| `/mapa-3d` | `Mapa3DPage` (deck.gl, lazy) | autenticado |
+| `/ia` | `RagRoute` → `ChatPage` (RAG) | **admin / gestor** |
 
 Perfis (`permissions.ts`):
 
@@ -383,11 +395,19 @@ bun test
 
 ## CI
 
-`.github/workflows/ci.yml` roda em todo push e PR (`working-directory: my-dash`):
+`.github/workflows/ci.yml` roda em todo push e PR, com dois jobs paralelos:
+
+**Frontend (Bun)** — na raiz do projeto:
 
 1. `bun install --frozen-lockfile`
-2. `bun test`
-3. `bun run build`
+2. `bun run lint` (Biome)
+3. `bun test`
+4. `bun run build`
+
+**Python / Streamlit (Ruff)** — em `streamlit/`:
+
+1. `ruff check .`
+2. `ruff format --check .`
 
 ---
 
@@ -404,4 +424,3 @@ bun test
 - **Feature folders**: criar `src/features/<feature>/` quando houver
   types + formatters + hooks + 2+ componentes relacionados.
 - **Segurança**: nunca persistir `access_token`; nunca commitar `.env`.
-```

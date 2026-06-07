@@ -45,7 +45,7 @@ export function IEOPDistribuicao({ distribuicao, totalObras }: Props) {
         <span>
           {totalObras != null ? (
             <>
-              <b>{classificadas}</b> de {totalObras}
+              <b>{totalObras}</b> de {classificadas} 
             </>
           ) : (
             <b>{classificadas}</b>

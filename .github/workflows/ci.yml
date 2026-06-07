@@ -6,11 +6,8 @@ on:
 
 jobs:
   frontend:
-    name: Lint, testes e build (my-dash)
+    name: Lint, testes e build (frontend)
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: my-dash
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -37,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: my-dash/streamlit
+        working-directory: streamlit
     steps:
       - name: Checkout
         uses: actions/checkout@v5

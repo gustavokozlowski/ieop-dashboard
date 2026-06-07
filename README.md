@@ -28,6 +28,7 @@ cards, badges, a tabela de obras e os marcadores do mapa.
 - [Stack](#stack)
 - [Configuração de ambiente](#configuração-de-ambiente)
 - [React + Bun](#react--bun)
+- [Docker](#docker)
 - [Streamlit](#streamlit)
 - [Estrutura do projeto](#estrutura-do-projeto)
 - [Rotas e perfis de acesso](#rotas-e-perfis-de-acesso)
@@ -51,7 +52,8 @@ Duas interfaces no mesmo workspace, consumindo o mesmo backend:
 | `streamlit/` | Python + Streamlit   | 8501         | Protótipos analíticos auxiliares |
 
 O servidor Bun (`src/index.ts`) serve o SPA **e** atua como **proxy reverso**:
-toda requisição para `/proxy/*` é encaminhada para `BUN_PUBLIC_API_URL`,
+toda requisição para `/proxy/*` é encaminhada para o backend
+(`API_PROXY_TARGET` ou `BUN_PUBLIC_API_URL`, default `http://localhost:8000`),
 eliminando problemas de CORS em desenvolvimento.
 
 ```
@@ -87,6 +89,7 @@ cp .env.example .env
 | Variável | Descrição |
 |----------|-----------|
 | `BUN_PUBLIC_API_URL` | URL do backend, exposta ao React no browser. Quando ausente, o cliente axios usa `/proxy` (proxy reverso do Bun). |
+| `API_PROXY_TARGET` | **Só do servidor** (não vai para o bundle). Alvo do proxy `/proxy/*`. Tem precedência sobre `BUN_PUBLIC_API_URL`; default `http://localhost:8000`. Útil em container (`http://host.docker.internal:8000`). |
 | `API_URL` | URL do backend usada pelo Streamlit no servidor |
 | `SUPABASE_URL` | URL do projeto Supabase |
 | `SUPABASE_ANON_KEY` | Chave anônima do Supabase |
@@ -123,7 +126,59 @@ bun start        # NODE_ENV=production
 
 ---
 
+## Docker
+
+Imagem única (Bun) que serve o SPA **e** faz o proxy reverso para o backend —
+o mesmo `src/index.ts` do dev. Veja o [`Dockerfile`](Dockerfile). O servidor
+escuta na porta **3000** dentro do container.
+
+### Build
+
+```bash
+docker build -t mydash-front .   # a partir de my-dash/
+```
+
+### Executar
+
+O alvo do proxy (`/proxy/*` → backend) vem de `API_PROXY_TARGET` — variável
+**só do servidor**, que não vaza para o bundle do cliente. O browser continua
+falando só com `/proxy` (mesma origem), sem CORS.
+
+**Docker Desktop / WSL2** (backend rodando no host) — bridge + port mapping,
+com o proxy apontando para o host via `host.docker.internal`:
+
+```bash
+docker run -d --name mydash -p 3000:3000 \
+  --add-host=host.docker.internal:host-gateway \
+  -e API_PROXY_TARGET=http://host.docker.internal:8000 \
+  mydash-front
+# acesse http://127.0.0.1:3000
+```
+
+**Linux nativo** (daemon local) — `--network host` também funciona, e o
+backend é alcançado direto em `localhost:8000` (default):
+
+```bash
+docker run -d --name mydash --network host mydash-front
+```
+
+> No Docker Desktop/WSL2, `--network host` **não** publica a porta no host —
+> use o modo bridge acima. E acesse por **`127.0.0.1:3000`** (o `localhost`
+> pode resolver para IPv6 `::1` e não ser encaminhado).
+
+### Parar
+
+```bash
+docker rm -f mydash
+```
+
+---
+
 ## Streamlit
+
+Interface analítica complementar focada nas **visualizações de ML** do IEOP.
+É **independente** do app React — ambos só consomem o mesmo backend/dados.
+Documentação detalhada em [streamlit/README.md](streamlit/README.md).
 
 ### Pré-requisitos
 
@@ -138,6 +193,26 @@ source .venv/bin/activate    # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 streamlit run app.py         # http://localhost:8501
 ```
+
+Lê o `.env` da raiz (`my-dash/.env`). Com `SUPABASE_URL`/`SUPABASE_ANON_KEY`
+preenchidos, usa dados reais; senão, **cai para dados de exemplo** gerados
+localmente (não quebra).
+
+### Páginas
+
+Conjunto IEOP / ML (destacado na home):
+
+| Página | Conteúdo |
+|--------|----------|
+| 🌡️ Predições | mapa de calor de risco por secretaria × status |
+| 📊 Features | importância das features do modelo XGBoost |
+| 🏢 Fornecedores | scatter risco × recorrência por fornecedor |
+| 📈 Evolução | evolução temporal das predições de risco |
+| ⚖️ Comparativo | execução real vs. prevista (desvio) |
+| 🧊 IEOP 3D | dispersão 3D custo × atraso × IEOP |
+
+Todas as páginas (`pages/01..06`) são do conjunto IEOP/ML — as páginas-demo do
+template (Métricas, Mapa de Usuários) foram removidas.
 
 ---
 
@@ -329,4 +404,4 @@ bun test
 - **Feature folders**: criar `src/features/<feature>/` quando houver
   types + formatters + hooks + 2+ componentes relacionados.
 - **Segurança**: nunca persistir `access_token`; nunca commitar `.env`.
-
+```

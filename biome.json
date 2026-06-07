@@ -34,7 +34,15 @@
       },
       "style": {
         "noNonNullAssertion": "off",
-        "useTemplate": "warn"
+        "useTemplate": "warn",
+        "noRestrictedImports": {
+          "level": "error",
+          "options": {
+            "paths": {
+              "@phosphor-icons/react": "Importe por ícone (deep import): @phosphor-icons/react/dist/icons/<Nome>. O barril processa ~9000 ícones e estoura o build (0.2s → 40s+)."
+            }
+          }
+        }
       },
       "suspicious": {
         "noArrayIndexKey": "warn",

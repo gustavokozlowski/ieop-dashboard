@@ -7,5 +7,5 @@ interface AlertaBadgeProps {
 
 export function AlertaBadge({ taxa }: AlertaBadgeProps) {
   if (taxa <= ALERTA_THRESHOLD) return null;
-  return <Badge label={`⚠ ${(taxa * 100).toFixed(0)}% aditivos`} variant="danger" dot={false} />;
+  return <Badge label={`${(taxa * 100).toFixed(0)}% aditivos`} variant="danger" dot />;
 }

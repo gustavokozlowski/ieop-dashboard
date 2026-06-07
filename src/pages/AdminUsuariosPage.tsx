@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Footer } from "../components/Footer";
+import { CheckCircleIcon, WarningIcon } from "../components/icons";
 import { PageLayout } from "../components/PageLayout";
 import {
   type AdminUserForm,
@@ -69,12 +70,12 @@ export function AdminUsuariosPage() {
 
         {okMsg && (
           <div className={`${styles.banner} ${styles.bannerOk}`} role="status">
-            ✅ {okMsg}
+            <CheckCircleIcon size={16} weight="fill" aria-hidden /> {okMsg}
           </div>
         )}
         {errMsg && (
           <div className={`${styles.banner} ${styles.bannerErr}`} role="alert">
-            ⚠ {errMsg}
+            <WarningIcon size={16} weight="fill" aria-hidden /> {errMsg}
           </div>
         )}
 

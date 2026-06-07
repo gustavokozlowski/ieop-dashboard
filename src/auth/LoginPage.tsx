@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { LogoIcon } from "../components/icons";
+import { LogoIcon, WarningIcon } from "../components/icons";
 import { type LoginForm, loginSchema } from "../schemas/auth.schema";
 import { useAuthContext } from "./AuthContext";
 import styles from "./authForm.module.css";
@@ -78,7 +78,7 @@ export function LoginPage() {
           <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
             {serverError && (
               <div className={styles.errorBanner} role="alert">
-                <span aria-hidden>⚠</span>
+                <WarningIcon aria-hidden />
                 {serverError}
               </div>
             )}

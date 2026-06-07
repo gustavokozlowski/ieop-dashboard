@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { SparkleIcon, WarningIcon } from "../components/icons";
 import { PageLayout } from "../components/PageLayout";
 import { ChatInput } from "../features/chat/ChatInput";
 import { ChatMessage } from "../features/chat/ChatMessage";
@@ -55,7 +56,7 @@ export function ChatPage() {
             {!hasMessages ? (
               <div className={styles.welcome}>
                 <span className={styles.welcomeIcon} aria-hidden>
-                  ✦
+                  <SparkleIcon size={28} weight="fill" />
                 </span>
                 <h2 className={styles.welcomeTitle}>Agente RAG — Obras e Contratos</h2>
                 <p className={styles.welcomeSubtitle}>
@@ -91,7 +92,7 @@ export function ChatPage() {
           {/* Error banner */}
           {error && (
             <div className={styles.errorBanner} role="alert">
-              <span aria-hidden>⚠</span>
+              <WarningIcon aria-hidden />
               {error}
             </div>
           )}

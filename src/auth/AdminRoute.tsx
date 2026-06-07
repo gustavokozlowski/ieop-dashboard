@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { LockIcon } from "../components/icons";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { lazyWithReload } from "../components/lazyWithReload";
 import { PageLayout } from "../components/PageLayout";
@@ -30,9 +31,15 @@ export function AdminRoute() {
             borderRadius: "var(--radius-lg)",
           }}
         >
-          <div style={{ fontSize: "2rem", marginBottom: "var(--space-3)" }} aria-hidden>
-            🔒
-          </div>
+          <LockIcon
+            size={32}
+            aria-hidden
+            style={{
+              display: "block",
+              margin: "0 auto var(--space-3)",
+              color: "var(--color-text-muted)",
+            }}
+          />
           <h2
             style={{
               fontSize: "var(--text-lg)",

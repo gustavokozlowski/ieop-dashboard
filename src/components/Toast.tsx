@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { CloseIcon, WarningIcon } from "./icons";
 import styles from "./Toast.module.css";
 
 type ToastType = "error" | "warning";
@@ -32,7 +33,7 @@ function ToastEntry({ toast, onDismiss }: { toast: ToastItem; onDismiss: (id: st
   return (
     <div className={`${styles.toast} ${styles[toast.type]}`} role="alert" aria-live="assertive">
       <span className={styles.icon} aria-hidden>
-        {toast.type === "error" ? "⚠" : "⚡"}
+        <WarningIcon weight="fill" />
       </span>
       <div className={styles.body}>
         <p className={styles.title}>{toast.title}</p>
@@ -44,7 +45,7 @@ function ToastEntry({ toast, onDismiss }: { toast: ToastItem; onDismiss: (id: st
         onClick={() => onDismiss(toast.id)}
         aria-label="Fechar notificação"
       >
-        ✕
+        <CloseIcon size={14} aria-hidden />
       </button>
     </div>
   );

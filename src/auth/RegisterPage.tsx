@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { LogoIcon } from "../components/icons";
+import { InfoIcon, LogoIcon, WarningIcon } from "../components/icons";
 import { type RegisterForm, registerSchema } from "../schemas/auth.schema";
 import { useAuthContext } from "./AuthContext";
 import styles from "./authForm.module.css";
@@ -104,7 +104,7 @@ export function RegisterPage() {
           <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
             {serverError && (
               <div className={styles.errorBanner} role="alert">
-                <span aria-hidden>⚠</span>
+                <WarningIcon aria-hidden />
                 {serverError}
               </div>
             )}
@@ -154,7 +154,7 @@ export function RegisterPage() {
             </div>
 
             <div className={styles.infoNote} role="note">
-              <span aria-hidden>ℹ️</span>
+              <InfoIcon size={16} aria-hidden style={{ flexShrink: 0, marginTop: 1 }} />
               <span>
                 Conta criada como <b>Somente leitura</b> — perfis elevados só por um admin.
               </span>

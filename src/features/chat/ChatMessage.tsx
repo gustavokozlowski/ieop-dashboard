@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuthContext } from "../../auth/AuthContext";
 import { initials } from "../../auth/initials";
+import { CheckIcon, CopyIcon } from "../../components/icons";
 import styles from "./ChatMessage.module.css";
 import { SourceCard } from "./SourceCard";
 import type { Message } from "./types";
@@ -51,7 +52,15 @@ export function ChatMessage({ message, anchorRef }: ChatMessageProps) {
                 title="Copiar resposta"
                 aria-label="Copiar resposta"
               >
-                {copied ? "✓ Copiado" : "⎘ Copiar"}
+                {copied ? (
+                  <>
+                    <CheckIcon size={13} aria-hidden /> Copiado
+                  </>
+                ) : (
+                  <>
+                    <CopyIcon size={13} aria-hidden /> Copiar
+                  </>
+                )}
               </button>
             )}
             <span className={styles.timestamp}>{formatTime(message.timestamp)}</span>

@@ -3,6 +3,7 @@ import type { BadgeVariant } from "../../../components/Badge";
 import { Badge } from "../../../components/Badge";
 import { EmptyHint } from "../../../components/EmptyHint";
 import { IEOPBadge } from "../../../components/IEOPBadge";
+import { ArrowLeftIcon } from "../../../components/icons";
 import { getIEOPColor } from "../../dashboard/ieop";
 import { STATUS_LABELS } from "../../mapa/types";
 import { RiskBadge } from "../RiskBadge";
@@ -28,7 +29,7 @@ export function HeaderObra({ obra }: HeaderObraProps) {
   return (
     <div className={styles.wrapper}>
       <button type="button" className={styles.backBtn} onClick={() => navigate("/obras")}>
-        ← Obras
+        <ArrowLeftIcon size={14} aria-hidden /> Obras
       </button>
 
       <h1 className={styles.nome}>{obra.nome}</h1>

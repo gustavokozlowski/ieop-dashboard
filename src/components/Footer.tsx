@@ -1,4 +1,5 @@
 import styles from "./Footer.module.css";
+import { SparkleIcon } from "./icons";
 
 /** Rodapé assinado "team Serena" — decorativo, degradável sem prejuízo funcional. */
 export function Footer() {
@@ -15,7 +16,10 @@ export function Footer() {
         <span className={`${styles.rule} ${styles.ruleR}`} />
       </div>
       <div className={styles.name}>
-        team Serena <span className={styles.heart}>✦</span>
+        team Serena{" "}
+        <span className={styles.heart}>
+          <SparkleIcon size={12} weight="fill" aria-hidden />
+        </span>
       </div>
       <div className={styles.sub}>
         <span className={styles.dot} /> IEOP · Índice de Eficiência de Obras Públicas ·{" "}

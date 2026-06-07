@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { ArrowLeftIcon } from "../../../components/icons";
 import { RiskBadge } from "../../obras/RiskBadge";
 import { AlertaBadge } from "../AlertaBadge";
 import { formatBRL, formatCnpj } from "../formatters";
@@ -15,7 +16,7 @@ export function PerfilHeader({ perfil }: PerfilHeaderProps) {
   return (
     <div className={styles.wrapper}>
       <button type="button" className={styles.backBtn} onClick={() => navigate("/fornecedores")}>
-        ← Fornecedores
+        <ArrowLeftIcon size={14} aria-hidden /> Fornecedores
       </button>
 
       <h1 className={styles.nome}>{perfil.nome}</h1>

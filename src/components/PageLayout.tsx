@@ -5,7 +5,7 @@ import { useAuthContext } from "../auth/AuthContext";
 import { initials } from "../auth/initials";
 import { useObrasTotal } from "../features/obras/useObras";
 import { PERFIL_LABELS } from "../schemas/auth.schema";
-import { LogoIcon } from "./icons";
+import { CloseIcon, LogoIcon, MenuIcon } from "./icons";
 import { buildNav, type NavGroup } from "./nav";
 import styles from "./PageLayout.module.css";
 
@@ -110,7 +110,11 @@ export function PageLayout({ children, nav, pageTitle, breadcrumb, headerRight }
               aria-label={drawerOpen ? "Fechar menu" : "Abrir menu"}
               aria-expanded={drawerOpen}
             >
-              {drawerOpen ? "✕" : "☰"}
+              {drawerOpen ? (
+                <CloseIcon size={20} aria-hidden />
+              ) : (
+                <MenuIcon size={20} aria-hidden />
+              )}
             </button>
             <div className={styles.headerTitles}>
               {breadcrumb && <span className={styles.crumb}>{breadcrumb}</span>}

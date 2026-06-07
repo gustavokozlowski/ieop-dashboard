@@ -1,4 +1,4 @@
-import { SearchIcon } from "../../components/icons";
+import { SearchIcon, WarningIcon } from "../../components/icons";
 import { RISCO_LABELS } from "../mapa/types";
 import styles from "./FornecedoresFilters.module.css";
 import type { FornecedoresFilter, RiscoNivel } from "./types";
@@ -57,7 +57,9 @@ export function FornecedoresFilters({
           onChange={(e) => set("somenteAlerta", e.target.checked)}
           aria-label="Exibir somente fornecedores com alerta de aditivos"
         />
-        <span className={styles.alertLabel}>⚠ Somente com alerta ({">"}30%)</span>
+        <span className={styles.alertLabel}>
+          <WarningIcon size={13} aria-hidden /> Somente com alerta ({">"}30%)
+        </span>
       </label>
 
       <span

@@ -1,8 +1,8 @@
-# Streamlit — Visualizações de ML do IEOP
+# IEOP Analytics — Visualizações de ML
 
-Interface analítica em Python/Streamlit que explora as **predições de risco**
-e a mecânica do modelo de ML por trás do IEOP (Índice de Eficiência de Obras
-Públicas — RJ).
+**IEOP Analytics** é a interface analítica (em Python/Streamlit) que explora as
+**predições de risco** e a mecânica do modelo de ML por trás do IEOP (Índice de
+Eficiência de Obras Públicas — Macaé/RJ).
 
 É uma interface **independente** do app React (`../src/`): as duas apenas
 consomem os mesmos dados. Rodar uma **não** exige rodar a outra.

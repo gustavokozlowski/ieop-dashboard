@@ -29,7 +29,7 @@ cards, badges, a tabela de obras e os marcadores do mapa.
 - [Configuração de ambiente](#configuração-de-ambiente)
 - [React + Bun](#react--bun)
 - [Docker](#docker)
-- [Streamlit](#streamlit)
+- [IEOP Analytics](#ieop-analytics)
 - [Estrutura do projeto](#estrutura-do-projeto)
 - [Rotas e perfis de acesso](#rotas-e-perfis-de-acesso)
 - [Camada de dados](#camada-de-dados)
@@ -49,7 +49,7 @@ Duas interfaces no mesmo workspace, consumindo o mesmo backend:
 | Pasta        | Stack                | Porta padrão | Papel |
 |--------------|----------------------|:------------:|-------|
 | `src/`       | React 19 + Bun       | 3000         | SPA principal (dashboard, obras, mapa, fornecedores, IA) |
-| `streamlit/` | Python + Streamlit   | 8501         | Protótipos analíticos auxiliares |
+| `analytics/` | Python + Streamlit   | 8501         | **IEOP Analytics** — visualizações de ML (auxiliar) |
 
 O servidor Bun (`src/index.ts`) serve o SPA **e** atua como **proxy reverso**:
 toda requisição para `/proxy/*` é encaminhada para o backend
@@ -92,7 +92,7 @@ cp .env.example .env
 |----------|-----------|
 | `BUN_PUBLIC_API_URL` | URL do backend, exposta ao React no browser. Quando ausente, o cliente axios usa `/proxy` (proxy reverso do Bun). |
 | `API_PROXY_TARGET` | **Só do servidor** (não vai para o bundle). Alvo do proxy `/proxy/*`. Tem precedência sobre `BUN_PUBLIC_API_URL`; default `http://localhost:8000`. Útil em container (`http://host.docker.internal:8000`). |
-| `API_URL` | URL do backend usada pelo Streamlit no servidor |
+| `API_URL` | URL do backend usada pelo IEOP Analytics no servidor |
 | `SUPABASE_URL` | URL do projeto Supabase |
 | `SUPABASE_ANON_KEY` | Chave anônima do Supabase |
 
@@ -184,11 +184,12 @@ docker rm -f ieop
 
 ---
 
-## Streamlit
+## IEOP Analytics
 
-Interface analítica complementar focada nas **visualizações de ML** do IEOP.
-É **independente** do app React — ambos só consomem o mesmo backend/dados.
-Documentação detalhada em [streamlit/README.md](streamlit/README.md).
+**IEOP Analytics** (em `analytics/`, construído com Streamlit) é a interface
+analítica complementar, focada nas **visualizações de ML** do IEOP. É
+**independente** do app React — ambos só consomem o mesmo backend/dados.
+Documentação detalhada em [analytics/README.md](analytics/README.md).
 
 ### Pré-requisitos
 
@@ -197,7 +198,7 @@ Documentação detalhada em [streamlit/README.md](streamlit/README.md).
 ### Instalação e dev
 
 ```bash
-cd streamlit
+cd analytics
 python -m venv .venv
 source .venv/bin/activate    # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
@@ -403,7 +404,7 @@ bun test
 3. `bun test`
 4. `bun run build`
 
-**Python / Streamlit (Ruff)** — em `streamlit/`:
+**Python / IEOP Analytics (Ruff)** — em `analytics/`:
 
 1. `ruff check .`
 2. `ruff format --check .`

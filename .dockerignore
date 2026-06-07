@@ -2,7 +2,7 @@ node_modules
 dist
 .git
 design
-streamlit
+analytics
 **/*.log
 .DS_Store
 .vscode

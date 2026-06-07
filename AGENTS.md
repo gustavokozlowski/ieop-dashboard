@@ -2,7 +2,7 @@
 
 ## Scope
 
-Bun + React 19 SPA com servidor Bun (SSR-lite + proxy reverso) e Streamlit em `streamlit/`.
+Bun + React 19 SPA com servidor Bun (SSR-lite + proxy reverso) e IEOP Analytics (Streamlit) em `analytics/`.
 
 ## Commands
 

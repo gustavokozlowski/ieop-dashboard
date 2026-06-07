@@ -16,14 +16,16 @@ declare module "axios" {
 
 // Quando BUN_PUBLIC_API_URL está setada (ex.: Vercel), usa a URL pública da API
 // embutida no build; senão cai no proxy do servidor Bun (/proxy), usado no dev
-// para evitar CORS. Bun inlina `process.env["BUN_PUBLIC_API_URL"]` como literal
-// no bundle, então não há referência a `process` em runtime.
+// para evitar CORS. O Bun só inlina o acesso por *notação de ponto*
+// (`process.env.BUN_PUBLIC_API_URL`); a forma com colchetes não é reconhecida
+// pelo bundler e deixa um `process` solto no bundle (ReferenceError no browser).
+// Var ausente é substituída por `undefined` → cai no `|| "/proxy"`.
 //
 // Não gateamos por NODE_ENV: no build do Bun na Vercel o `--env` faz o NODE_ENV
 // vir do ambiente (não do --define) e nem sempre é "production", o que zerava a
 // URL e forçava "/proxy". Pra rodar o dev com proxy, deixe BUN_PUBLIC_API_URL
 // fora do .env local e aponte o backend via API_PROXY_TARGET (vide src/index.ts).
-export const BASE_URL = process.env["BUN_PUBLIC_API_URL"] || "/proxy";
+export const BASE_URL = process.env.BUN_PUBLIC_API_URL || "/proxy";
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,

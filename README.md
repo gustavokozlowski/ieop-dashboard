@@ -411,6 +411,30 @@ bun test
 
 ---
 
+## Git hooks (pre-commit)
+
+O hook versionado [`.githooks/pre-commit`](.githooks/pre-commit) roda os mesmos
+linters do CI **antes de cada commit**, apenas nos tipos de arquivo presentes no
+commit: **Biome** (se houver `.ts/.tsx/.js/.jsx`) e **Ruff** (se houver `.py`).
+Se houver erros, o commit é bloqueado.
+
+Ative uma vez após clonar:
+
+```bash
+bun run hooks:install      # = git config core.hooksPath .githooks
+```
+
+Para corrigir o que o hook apontar:
+
+```bash
+bun run lint:fix                                        # frontend (Biome)
+cd analytics && ruff check --fix . && ruff format .     # analytics (Ruff)
+```
+
+> Emergência: `git commit --no-verify` pula o hook.
+
+---
+
 ## Convenções
 
 - **Env do React**: prefixo `BUN_PUBLIC_`.

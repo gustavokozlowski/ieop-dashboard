@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# Pre-commit: roda os mesmos linters do CI (Biome no frontend, Ruff no Python),
+# apenas quando há arquivos do tipo correspondente no commit. Bloqueia o commit
+# se houver erros. Ative com: git config core.hooksPath .githooks
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
+staged="$(git diff --cached --name-only --diff-filter=ACMR)"
+[ -z "$staged" ] && exit 0
+
+fail=0
+
+# ── Frontend (Biome) ──────────────────────────────────────────────────────
+if echo "$staged" | grep -qE '\.(ts|tsx|js|jsx)$'; then
+  echo "▶ pre-commit · Biome (frontend)"
+  if ! bun run lint; then
+    echo "✖ Biome falhou. Corrija com:  bun run lint:fix" >&2
+    fail=1
+  fi
+fi
+
+# ── Analytics (Ruff) ──────────────────────────────────────────────────────
+if echo "$staged" | grep -qE '\.py$'; then
+  if command -v ruff >/dev/null 2>&1; then
+    echo "▶ pre-commit · Ruff (analytics)"
+    if ! (cd analytics && ruff check . && ruff format --check .); then
+      echo "✖ Ruff falhou. Corrija com:  (cd analytics && ruff check --fix . && ruff format .)" >&2
+      fail=1
+    fi
+  else
+    echo "⚠ ruff não encontrado — pulando checagem Python (pip install ruff)" >&2
+  fi
+fi
+
+if [ "$fail" -ne 0 ]; then
+  echo "✖ pre-commit bloqueado. Use --no-verify só em emergência." >&2
+  exit 1
+fi
+
+echo "✓ pre-commit OK"

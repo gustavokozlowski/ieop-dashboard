@@ -3,9 +3,7 @@ import type { BadgeVariant } from "../../../components/Badge";
 import { Badge } from "../../../components/Badge";
 import { type Column, Table } from "../../../components/Table";
 import { STATUS_LABELS } from "../../mapa/types";
-import { ExecutionBar } from "../../obras/ExecutionBar";
-import { RiskBadge } from "../../obras/RiskBadge";
-import { formatBRL, formatDate } from "../formatters";
+import { formatBRL } from "../formatters";
 import type { ObraHistorico, ObraStatus } from "./types";
 
 const STATUS_VARIANT: Record<ObraStatus, BadgeVariant> = {
@@ -17,9 +15,12 @@ const STATUS_VARIANT: Record<ObraStatus, BadgeVariant> = {
   cancelada: "danger",
 };
 
+// O endpoint /fornecedores/{cnpj}/obras só retorna objeto, situação e valor.
+// Execução, risco, datas e secretaria não vêm nesse payload, então não
+// exibimos colunas para eles (evita mostrar 0%/risco baixo/datas vazias como
+// se fossem dados reais). Detalhes completos ficam na obra (clique na linha).
 const COLUMNS: Column<ObraHistorico>[] = [
   { key: "nome", header: "Obra", sortable: true },
-  { key: "secretaria", header: "Secretaria", sortable: true },
   {
     key: "status",
     header: "Status",
@@ -33,12 +34,6 @@ const COLUMNS: Column<ObraHistorico>[] = [
     ),
   },
   {
-    key: "execucao_percentual",
-    header: "Execução",
-    sortable: true,
-    render: (v) => <ExecutionBar value={Number(v)} />,
-  },
-  {
     key: "valor_contratado",
     header: "Valor",
     sortable: true,
@@ -47,24 +42,6 @@ const COLUMNS: Column<ObraHistorico>[] = [
         {formatBRL(Number(v))}
       </span>
     ),
-  },
-  {
-    key: "prob_atraso",
-    header: "Risco",
-    sortable: true,
-    render: (v) => <RiskBadge prob={Number(v)} />,
-  },
-  {
-    key: "data_inicio",
-    header: "Início",
-    sortable: true,
-    render: (v) => formatDate(String(v)),
-  },
-  {
-    key: "previsao_termino",
-    header: "Previsão término",
-    sortable: true,
-    render: (v) => formatDate(String(v)),
   },
 ];
 

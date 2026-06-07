@@ -6,7 +6,9 @@ interface CardDatasProps {
   obra: ObraDetalhe;
 }
 
-function AtrasoValue({ dias }: { dias: number }) {
+// dias === null: backend não informou o atraso; não dá para afirmar "No prazo".
+function AtrasoValue({ dias }: { dias: number | null }) {
+  if (dias == null) return <span className={styles.vazio}>Não informado</span>;
   if (dias > 0)
     return (
       <span className={styles.atrasoPositive}>
@@ -18,6 +20,11 @@ function AtrasoValue({ dias }: { dias: number }) {
   return <span className={styles.atrasoZero}>No prazo</span>;
 }
 
+function DataValue({ data }: { data: string }) {
+  if (!data) return <span className={styles.vazio}>Não informada</span>;
+  return <span className={styles.dateValue}>{formatDate(data)}</span>;
+}
+
 export function CardDatas({ obra }: CardDatasProps) {
   return (
     <div className={styles.card}>
@@ -25,12 +32,12 @@ export function CardDatas({ obra }: CardDatasProps) {
 
       <div className={styles.dateRow}>
         <span className={styles.dateLabel}>Início</span>
-        <span className={styles.dateValue}>{formatDate(obra.data_inicio)}</span>
+        <DataValue data={obra.data_inicio} />
       </div>
 
       <div className={styles.dateRow}>
         <span className={styles.dateLabel}>Previsão de término</span>
-        <span className={styles.dateValue}>{formatDate(obra.previsao_termino)}</span>
+        <DataValue data={obra.previsao_termino} />
       </div>
 
       <div className={styles.dateRow}>

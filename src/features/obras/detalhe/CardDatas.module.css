@@ -35,6 +35,13 @@
   color: var(--color-text-primary);
 }
 
+/* Valor ausente (data sem registro ou situação sem dado de cronograma). */
+.vazio {
+  font-size: var(--text-sm);
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
 .atrasoPositive {
   font-size: var(--text-sm);
   font-weight: var(--font-bold);

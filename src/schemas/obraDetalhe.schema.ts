@@ -54,7 +54,7 @@ export const obraDetalheSchema = z.object({
   valor_aditivos: z.number(),
   data_inicio: z.string(),
   previsao_termino: z.string(),
-  atraso_dias: z.number(),
+  atraso_dias: z.number().nullable(),
   lat: z.number(),
   lng: z.number(),
   predicao: predicaoMLSchema,
@@ -126,7 +126,7 @@ export function adaptObraDetalhe(data: unknown): ObraDetalhe {
     valor_aditivos: 0,
     data_inicio: r.data_inicio ?? "",
     previsao_termino: r.data_prevista_fim ?? "",
-    atraso_dias: r.dias_atraso ?? 0,
+    atraso_dias: r.dias_atraso ?? null,
     lat: r.latitude ?? 0,
     lng: r.longitude ?? 0,
     predicao: {

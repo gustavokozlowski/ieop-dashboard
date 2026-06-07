@@ -17,6 +17,17 @@ const INITIAL_VIEW_STATE = {
 
 const MAX_ELEVATION = 3500; // metros (após normalização)
 
+// O tooltip do deck.gl renderiza `html` como HTML cru. Escapamos texto livre
+// vindo do backend (nome/secretaria/classe) antes de interpolar — evita XSS.
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 const IEOP_CLASSES = ["Ótimo", "Bom", "Regular", "Ruim", "Crítico"] as const;
 
 type ElevateBy = "valor" | "risco" | "ieop";
@@ -124,10 +135,10 @@ export function Mapa3D({ obras }: Mapa3DProps) {
           if (!o) return null;
           const ieop =
             o.ieop_score != null
-              ? `<br/>IEOP ${o.ieop_score.toFixed(1)} (${o.ieop_classe ?? "—"})`
+              ? `<br/>IEOP ${o.ieop_score.toFixed(1)} (${escapeHtml(o.ieop_classe ?? "—")})`
               : "";
           return {
-            html: `<strong>${o.nome}</strong><br/>${o.secretaria}<br/>${
+            html: `<strong>${escapeHtml(o.nome)}</strong><br/>${escapeHtml(o.secretaria)}<br/>${
               STATUS_LABELS[o.status]
             } · ${formatBRL(o.valor_contratado)} · ${RISCO_LABELS[riscoNivel(o.prob_atraso)]}${ieop}`,
             style: {

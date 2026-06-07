@@ -42,6 +42,7 @@ export function ChatMessage({ message, anchorRef }: ChatMessageProps) {
           <div className={styles.actions}>
             {!message.isStreaming && message.content && (
               <button
+                type="button"
                 className={`${styles.copyBtn} ${copied ? styles.copied : ""}`}
                 onClick={handleCopy}
                 title="Copiar resposta"

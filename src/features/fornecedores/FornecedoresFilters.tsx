@@ -67,6 +67,7 @@ export function FornecedoresFilters({
 
       {(filter.search || filter.somenteAlerta || filter.risco !== "todos") && (
         <button
+          type="button"
           onClick={() => onChange(DEFAULT_FILTER)}
           style={{
             background: "none",

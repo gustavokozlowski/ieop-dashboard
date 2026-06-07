@@ -26,7 +26,7 @@ export function HeaderObra({ obra }: HeaderObraProps) {
 
   return (
     <div className={styles.wrapper}>
-      <button className={styles.backBtn} onClick={() => navigate("/obras")}>
+      <button type="button" className={styles.backBtn} onClick={() => navigate("/obras")}>
         ← Obras
       </button>
 

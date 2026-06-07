@@ -13,6 +13,7 @@ export function SessionHistory({ userMessages, onScrollTo, onClear }: SessionHis
       <div className={styles.header}>
         <span className={styles.title}>Histórico</span>
         <button
+          type="button"
           className={styles.clearBtn}
           onClick={onClear}
           title="Limpar histórico"
@@ -26,6 +27,7 @@ export function SessionHistory({ userMessages, onScrollTo, onClear }: SessionHis
         {userMessages.map((m, i) => (
           <button
             key={m.id}
+            type="button"
             className={styles.item}
             onClick={() => onScrollTo(m.id)}
             title={m.content}

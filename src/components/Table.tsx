@@ -160,6 +160,7 @@ export function Table<T extends Record<string, unknown>>({
           </span>
           <div className={styles.pageButtons}>
             <button
+              type="button"
               className={styles.pageBtn}
               onClick={() => setPage((p) => p - 1)}
               disabled={safePage === 1}
@@ -172,6 +173,7 @@ export function Table<T extends Record<string, unknown>>({
               .map((p) => (
                 <button
                   key={p}
+                  type="button"
                   className={`${styles.pageBtn} ${p === safePage ? styles.current : ""}`}
                   onClick={() => setPage(p)}
                 >
@@ -179,6 +181,7 @@ export function Table<T extends Record<string, unknown>>({
                 </button>
               ))}
             <button
+              type="button"
               className={styles.pageBtn}
               onClick={() => setPage((p) => p + 1)}
               disabled={safePage === totalPages}

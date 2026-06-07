@@ -14,7 +14,7 @@ export function PerfilHeader({ perfil }: PerfilHeaderProps) {
 
   return (
     <div className={styles.wrapper}>
-      <button className={styles.backBtn} onClick={() => navigate("/fornecedores")}>
+      <button type="button" className={styles.backBtn} onClick={() => navigate("/fornecedores")}>
         ← Fornecedores
       </button>
 

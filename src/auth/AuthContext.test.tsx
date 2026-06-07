@@ -36,8 +36,12 @@ function Harness() {
       <span data-testid="status">{isLoading ? "loading" : isAuthenticated ? "in" : "out"}</span>
       <span data-testid="user">{user?.nome ?? "-"}</span>
       <span data-testid="perfil">{user?.perfil ?? "-"}</span>
-      <button onClick={() => login("gestor@ieop.dev", "senha123")}>login</button>
-      <button onClick={() => logout()}>logout</button>
+      <button type="button" onClick={() => login("gestor@ieop.dev", "senha123")}>
+        login
+      </button>
+      <button type="button" onClick={() => logout()}>
+        logout
+      </button>
     </div>
   );
 }

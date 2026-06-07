@@ -108,6 +108,7 @@ export function PageLayout({ children, nav, pageTitle, breadcrumb, headerRight }
         <header className={styles.header}>
           <div className={styles.headerLeft}>
             <button
+              type="button"
               className={styles.hamburger}
               onClick={() => setDrawerOpen((o) => !o)}
               aria-label={drawerOpen ? "Fechar menu" : "Abrir menu"}

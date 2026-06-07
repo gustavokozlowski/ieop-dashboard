@@ -94,6 +94,7 @@ export function MapFilters({
         </div>
 
         <button
+          type="button"
           className={styles.resetBtn}
           onClick={() => onChange(DEFAULT_FILTER)}
           aria-label="Resetar filtros"

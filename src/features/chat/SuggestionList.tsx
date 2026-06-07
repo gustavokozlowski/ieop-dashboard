@@ -14,6 +14,7 @@ export function SuggestionList({ onSelect, disabled }: SuggestionListProps) {
         {SUGGESTIONS.map((s) => (
           <button
             key={s.text}
+            type="button"
             className={styles.chip}
             onClick={() => onSelect(s.text)}
             disabled={disabled}

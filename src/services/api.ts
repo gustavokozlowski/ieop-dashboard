@@ -46,7 +46,10 @@ type QueueEntry = { resolve: (token: string) => void; reject: (err: unknown) => 
 let queue: QueueEntry[] = [];
 
 function drainQueue(err: unknown, token: string | null) {
-  queue.forEach(({ resolve, reject }) => (err ? reject(err) : resolve(token!)));
+  queue.forEach(({ resolve, reject }) => {
+    if (err) reject(err);
+    else resolve(token!);
+  });
   queue = [];
 }
 

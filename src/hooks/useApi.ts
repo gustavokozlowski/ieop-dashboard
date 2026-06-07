@@ -42,7 +42,9 @@ export function useApiMutation<TData = unknown, TBody = unknown>(
     mutationFn: (body) =>
       apiClient.request<TData>({ method, url: endpoint, data: body }).then((r) => r.data),
     onSuccess: (...args) => {
-      invalidates.forEach((key) => qc.invalidateQueries({ queryKey: [key] }));
+      invalidates.forEach((key) => {
+        qc.invalidateQueries({ queryKey: [key] });
+      });
       options?.onSuccess?.(...args);
     },
     ...options,

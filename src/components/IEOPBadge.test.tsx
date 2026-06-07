@@ -8,7 +8,7 @@ describe("IEOPBadge", () => {
     render(<IEOPBadge classe="Ótimo" />);
     const el = screen.getByText("Ótimo");
     expect(el).toBeInTheDocument();
-    expect(el).toHaveStyle({ color: IEOP_COLORS["Ótimo"]!.hex });
+    expect(el).toHaveStyle({ color: IEOP_COLORS.Ótimo!.hex });
   });
 
   it("renderiza 'Crítico'", () => {

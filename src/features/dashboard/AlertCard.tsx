@@ -24,7 +24,7 @@ export function AlertCard({ data, isLoading }: AlertCardProps) {
         <span className={styles.subtitle}>Top 5 obras</span>
       </div>
 
-      <ul className={styles.list} role="list">
+      <ul className={styles.list}>
         {!data || data.length === 0 ? (
           <li className={styles.empty}>Nenhuma obra encontrada.</li>
         ) : (

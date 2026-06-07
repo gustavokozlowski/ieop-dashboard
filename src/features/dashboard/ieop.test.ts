@@ -18,9 +18,9 @@ describe("getIEOPClasse", () => {
 
 describe("getIEOPColor", () => {
   it("retorna o hex da classe correspondente ao score", () => {
-    expect(getIEOPColor(85)).toBe(IEOP_COLORS["Ótimo"]!.hex);
-    expect(getIEOPColor(65)).toBe(IEOP_COLORS["Bom"]!.hex);
-    expect(getIEOPColor(10)).toBe(IEOP_COLORS["Crítico"]!.hex);
+    expect(getIEOPColor(85)).toBe(IEOP_COLORS.Ótimo!.hex);
+    expect(getIEOPColor(65)).toBe(IEOP_COLORS.Bom!.hex);
+    expect(getIEOPColor(10)).toBe(IEOP_COLORS.Crítico!.hex);
   });
 
   it("retorna o hex neutro para score null", () => {

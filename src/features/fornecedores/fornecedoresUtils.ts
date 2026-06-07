@@ -51,7 +51,7 @@ export function exportFornecedoresCsv(lista: FornecedorRanking[]): void {
     f.obras_concluidas,
   ]);
   const csv = [headers, ...rows].map((r) => r.map(escapeField).join(",")).join("\n");
-  const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" });
+  const blob = new Blob([`﻿${csv}`], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;

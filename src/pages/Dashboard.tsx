@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { Footer } from "../components/Footer";
-import { BellIcon, SearchIcon } from "../components/icons";
 import { PageLayout } from "../components/PageLayout";
 import { AlertCard } from "../features/dashboard/AlertCard";
 import { DonutChart } from "../features/dashboard/DonutChart";
@@ -103,12 +102,6 @@ export function Dashboard() {
             <span className={styles.liveDot} /> ao vivo
           </span>
           <PeriodToggle onChange={setPeriod} />
-          <button type="button" className={styles.iconBtn} aria-label="Buscar">
-            <SearchIcon />
-          </button>
-          <button type="button" className={styles.iconBtn} aria-label="Notificações">
-            <BellIcon />
-          </button>
         </>
       }
     >

@@ -37,15 +37,11 @@ export function LogoIcon({ size = 34 }: { size?: number }) {
         stroke="#fff"
         strokeOpacity="0.1"
       />
-      <path
-        d="M9 27.5 L16.5 20 L23 24 L31 12"
-        stroke="#fff"
-        strokeWidth="2.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="31" cy="12" r="2.7" fill="#fff" />
-      <circle cx="9" cy="27.5" r="1.8" fill="#fff" fillOpacity="0.55" />
+      {/* Phosphor ChartLineUp (viewBox 0 0 256 256), branco e centralizado —
+          mesmo ícone do favicon, para identidade consistente. */}
+      <g transform="translate(7.5 7.5) scale(0.09765625)" fill="#fff">
+        <path d="M232,208a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V48a8,8,0,0,1,16,0V156.69l50.34-50.35a8,8,0,0,1,11.32,0L128,132.69,180.69,80H160a8,8,0,0,1,0-16h40a8,8,0,0,1,8,8v40a8,8,0,0,1-16,0V91.31l-58.34,58.35a8,8,0,0,1-11.32,0L96,123.31l-56,56V200H224A8,8,0,0,1,232,208Z" />
+      </g>
       <defs>
         <linearGradient
           id="ieop-logo-grad"

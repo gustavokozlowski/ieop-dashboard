@@ -12,8 +12,10 @@ import streamlit as st
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 import db  # noqa: E402
 
-st.set_page_config(page_title="IEOP 3D — Custo × Atraso × IEOP", layout="wide", page_icon="🧊")
-st.title("🧊 Custo × Atraso × IEOP")
+st.set_page_config(
+    page_title="IEOP 3D — Custo × Atraso × IEOP", layout="wide", page_icon=":material/view_in_ar:"
+)
+st.title(":material/view_in_ar: Custo × Atraso × IEOP")
 st.caption(
     "Cada ponto é uma obra. As três variáveis contínuas aparecem juntas — "
     "arraste para girar e identifique aglomerados de baixo IEOP."
@@ -86,8 +88,16 @@ if eixo_x == "custo_m2":
 
 m1, m2, m3 = st.columns(3)
 m1.metric("Obras no gráfico", len(df_f))
-m2.metric("IEOP médio", f"{df_f['ieop_score'].mean():.1f}" if len(df_f) else "—")
-m3.metric("Atraso médio", f"{df_f['dias_atraso'].mean():.0f} dias" if len(df_f) else "—")
+m2.metric(
+    "IEOP médio",
+    f"{df_f['ieop_score'].mean():.1f}" if len(df_f) else "—",
+    help="Índice de Eficiência (0–100): quanto maior, melhor a obra.",
+)
+m3.metric(
+    "Atraso médio",
+    f"{df_f['dias_atraso'].mean():.0f} dias" if len(df_f) else "—",
+    help="Média de dias de atraso das obras filtradas.",
+)
 
 if df_f.empty:
     st.info("Nenhuma obra atende aos filtros selecionados.")

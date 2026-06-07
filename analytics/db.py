@@ -114,9 +114,9 @@ def fetch(table: str, columns: str = "*", limit: int = 10_000) -> pd.DataFrame:
 def notice_sample() -> None:
     """Exibe banner informando que dados são de amostra."""
     st.info(
-        "ℹ️ **Dados de exemplo.** "
+        "**Dados de exemplo.** "
         "Configure `SUPABASE_URL` e `SUPABASE_ANON_KEY` no `.env` para dados reais.",
-        icon="ℹ️",
+        icon=":material/info:",
     )
 
 

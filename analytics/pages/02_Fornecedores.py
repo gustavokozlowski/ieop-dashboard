@@ -11,8 +11,8 @@ import streamlit as st
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 import db  # noqa: E402
 
-st.set_page_config(page_title="Fornecedores — IEOP", layout="wide", page_icon="🏢")
-st.title("🏢 Risco × Recorrência de Fornecedores")
+st.set_page_config(page_title="Fornecedores — IEOP", layout="wide", page_icon=":material/business:")
+st.title(":material/business: Risco × Recorrência de Fornecedores")
 st.caption("Análise de fornecedores por probabilidade média de atraso e volume de obras.")
 
 # ── Dados ─────────────────────────────────────────────────────────────────────
@@ -56,13 +56,24 @@ forn = forn[forn["n_obras"] >= min_obras]
 # ── Métricas ──────────────────────────────────────────────────────────────────
 
 m1, m2, m3, m4 = st.columns(4)
-m1.metric("Fornecedores analisados", len(forn))
-m2.metric("Com alto risco médio", (forn["avg_prob_atraso"] >= 0.7).sum())
+m1.metric(
+    "Fornecedores analisados",
+    len(forn),
+    help=f"Fornecedores com ao menos {min_obras} obra(s) no recorte atual.",
+)
+m2.metric(
+    "Com alto risco médio",
+    (forn["avg_prob_atraso"] >= 0.7).sum(),
+    delta_color="inverse",
+    help="Fornecedores cuja probabilidade média de atraso é ≥ 70%.",
+)
 recorrente = forn[forn["n_obras"] >= 5]
 m3.metric("Fornecedores recorrentes (≥5 obras)", len(recorrente))
 if not forn.empty:
     top = forn.loc[forn["avg_prob_atraso"].idxmax(), "fornecedor_nome"]
-    m4.metric("Maior risco médio", top)
+    m4.metric(
+        "Maior risco médio", top, help="Fornecedor com a maior probabilidade média de atraso."
+    )
 
 st.divider()
 

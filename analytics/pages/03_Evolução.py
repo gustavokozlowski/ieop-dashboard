@@ -13,8 +13,8 @@ import streamlit as st
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 import db  # noqa: E402
 
-st.set_page_config(page_title="Evolução — IEOP", layout="wide", page_icon="📈")
-st.title("📈 Evolução Temporal das Predições")
+st.set_page_config(page_title="Evolução — IEOP", layout="wide", page_icon=":material/trending_up:")
+st.title(":material/trending_up: Evolução Temporal das Predições")
 st.caption("Tendência da probabilidade de atraso e volume de obras ao longo do tempo.")
 
 # ── Dados ─────────────────────────────────────────────────────────────────────
@@ -47,18 +47,29 @@ monthly_all = df_f.groupby("mes")["prob_atraso"].mean()
 if len(monthly_all) >= 2:
     delta = monthly_all.iloc[-1] - monthly_all.iloc[-2]
     m1.metric(
-        "Prob. média (último mês)", f"{monthly_all.iloc[-1]:.1%}", f"{delta:+.1%} vs anterior"
+        "Prob. média (último mês)",
+        f"{monthly_all.iloc[-1]:.1%}",
+        f"{delta:+.1%} vs anterior",
+        delta_color="inverse",
+        help="Probabilidade média de atraso no mês mais recente do período filtrado.",
     )
 else:
     m1.metric("Prob. média", f"{df_f['prob_atraso'].mean():.1%}")
 
 m2.metric("Meses analisados", df_f["mes"].nunique())
-trend = (
-    "📈 Crescente"
-    if len(monthly_all) >= 2 and monthly_all.iloc[-1] > monthly_all.iloc[0]
-    else "📉 Decrescente"
-)
-m3.metric("Tendência geral", trend)
+if len(monthly_all) >= 2:
+    variacao = monthly_all.iloc[-1] - monthly_all.iloc[0]
+    trend = "Crescente" if variacao > 0 else "Decrescente" if variacao < 0 else "Estável"
+    # delta_color="inverse": risco subindo (delta positivo) aparece em vermelho.
+    m3.metric(
+        "Tendência geral",
+        trend,
+        f"{variacao:+.1%} no período",
+        delta_color="inverse",
+        help="Variação da probabilidade média do primeiro ao último mês do período.",
+    )
+else:
+    m3.metric("Tendência geral", "—")
 
 st.divider()
 

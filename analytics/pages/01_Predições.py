@@ -13,8 +13,8 @@ import streamlit as st
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 import db  # noqa: E402
 
-st.set_page_config(page_title="Predições — IEOP", layout="wide", page_icon="🌡️")
-st.title("🌡️ Mapa de Calor de Risco")
+st.set_page_config(page_title="Predições — IEOP", layout="wide", page_icon=":material/thermostat:")
+st.title(":material/thermostat: Mapa de Calor de Risco")
 st.caption("Probabilidade média de atraso por secretaria e status da obra.")
 
 # ── Dados ─────────────────────────────────────────────────────────────────────
@@ -37,21 +37,38 @@ with st.sidebar:
         format_func=lambda s: db.STATUS_LABELS.get(s, s),
     )
 
-df_f = (
-    df[df["secretaria"].isin(sel_sec) & df["status"].isin(sel_status)]
-    if sel_sec and sel_status
-    else df
-)
+df_f = df[df["secretaria"].isin(sel_sec) & df["status"].isin(sel_status)]
+
+if df_f.empty:
+    st.warning(
+        "Nenhuma obra corresponde aos filtros. Ajuste a seleção na barra lateral.",
+        icon=":material/filter_alt_off:",
+    )
+    st.stop()
 
 # ── Métricas ──────────────────────────────────────────────────────────────────
 
 m1, m2, m3, m4 = st.columns(4)
 m1.metric("Total de obras", f"{len(df_f):,}")
-m2.metric("Prob. média de atraso", f"{df_f['prob_atraso'].mean():.1%}")
+m2.metric(
+    "Prob. média de atraso",
+    f"{df_f['prob_atraso'].mean():.1%}",
+    help="Média da probabilidade de atraso prevista pelo modelo nas obras filtradas.",
+)
 alto_risco = (df_f["prob_atraso"] >= 0.7).sum()
-m3.metric("Com alto risco (≥70%)", f"{alto_risco:,}", f"{alto_risco / len(df_f):.1%} do total")
+m3.metric(
+    "Com alto risco (≥70%)",
+    f"{alto_risco:,}",
+    f"{alto_risco / len(df_f):.1%} do total",
+    delta_color="inverse",
+    help="Obras com probabilidade de atraso igual ou superior a 70%.",
+)
 top_sec = df_f.groupby("secretaria")["prob_atraso"].mean().idxmax()
-m4.metric("Secretaria mais crítica", top_sec)
+m4.metric(
+    "Secretaria mais crítica",
+    top_sec,
+    help="Secretaria com a maior probabilidade média de atraso no recorte atual.",
+)
 
 st.divider()
 

@@ -122,6 +122,13 @@ export const BuildingIcon = (p: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+export const SearchIcon = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...box(p)}>
+    <circle cx="11" cy="11" r="7" />
+    <path d="m21 21-4.3-4.3" />
+  </svg>
+);
+
 export const ActivityIcon = (p: SVGProps<SVGSVGElement>) => (
   <svg {...box(p)}>
     <path d="M3 12h4l3 8 4-16 3 8h4" />

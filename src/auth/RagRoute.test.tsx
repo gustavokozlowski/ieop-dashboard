@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, mock } from "bun:test";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 
@@ -22,12 +23,15 @@ const { AuthProvider } = await import("./AuthContext");
 const { RagRoute } = await import("./RagRoute");
 
 function renderRag() {
+  const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   return render(
-    <AuthProvider>
-      <MemoryRouter>
-        <RagRoute />
-      </MemoryRouter>
-    </AuthProvider>,
+    <QueryClientProvider client={qc}>
+      <AuthProvider>
+        <MemoryRouter>
+          <RagRoute />
+        </MemoryRouter>
+      </AuthProvider>
+    </QueryClientProvider>,
   );
 }
 

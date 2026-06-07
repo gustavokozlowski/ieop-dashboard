@@ -23,6 +23,13 @@ export async function getObras(): Promise<ObraListItem[]> {
   return [first.items, ...rest].flat().map(adaptObra);
 }
 
+// Total de obras sem baixar a lista inteira: pede 1 item e lê `total` do
+// envelope paginado. Usado no badge da navegação (renderiza em toda página).
+export async function getObrasTotal(): Promise<number> {
+  const { data } = await apiClient.get("/api/v1/obras/", { params: { size: 1, page: 1 } });
+  return obrasPageSchema.parse(data).total;
+}
+
 export async function getObraById(id: string): Promise<ObraDetalhe> {
   const { data } = await apiClient.get(`/api/v1/obras/${id}`);
   return adaptObraDetalhe(data);

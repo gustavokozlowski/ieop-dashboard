@@ -1,6 +1,7 @@
 import { type ReactNode, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAuthContext } from "../auth/AuthContext";
+import { useObrasTotal } from "../features/obras/useObras";
 import { PERFIL_LABELS } from "../schemas/auth.schema";
 import { LogoIcon, LogoutIcon } from "./icons";
 import { buildNav, type NavGroup } from "./nav";
@@ -29,10 +30,11 @@ export function PageLayout({ children, nav, pageTitle, breadcrumb, headerRight }
   const [drawerOpen, setDrawerOpen] = useState(false);
   const location = useLocation();
   const { user, logout } = useAuthContext();
+  const { data: obrasTotal } = useObrasTotal();
 
   // Nav canônico, filtrado por perfil (ex.: readonly não vê o Agente IA).
   // A prop `nav` permite override pontual, mas o padrão vem do perfil.
-  const groups = nav ?? buildNav(user?.perfil);
+  const groups = nav ?? buildNav(user?.perfil, { obras: obrasTotal });
 
   // Fecha o drawer ao navegar (mobile)
   useEffect(() => {

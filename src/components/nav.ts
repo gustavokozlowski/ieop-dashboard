@@ -16,12 +16,23 @@ export interface NavGroup {
   items: NavItem[];
 }
 
+/** Contadores opcionais exibidos como badge ao lado do item de menu. */
+export interface NavCounts {
+  obras?: number;
+}
+
 // Navegação canônica do app. O item do Agente IA (RAG) só aparece para
-// perfis com permissão (admin/gestor) — readonly não vê.
-export function buildNav(perfil: Perfil | undefined): NavGroup[] {
+// perfis com permissão (admin/gestor) — readonly não vê. `counts` alimenta
+// os badges (ex.: total de obras); ausente → item sem badge.
+export function buildNav(perfil: Perfil | undefined, counts?: NavCounts): NavGroup[] {
   const principal: NavItem[] = [
     { path: "/", label: "Dashboard", icon: DashboardIcon({}) },
-    { path: "/obras", label: "Obras", icon: ObrasIcon({}) },
+    {
+      path: "/obras",
+      label: "Obras",
+      icon: ObrasIcon({}),
+      badge: counts?.obras != null ? counts.obras.toLocaleString("pt-BR") : undefined,
+    },
     { path: "/fornecedores", label: "Fornecedores", icon: FornecedoresIcon({}) },
   ];
 

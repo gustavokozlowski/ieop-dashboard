@@ -1,10 +1,11 @@
+import { SignOutIcon } from "@phosphor-icons/react/dist/icons/SignOut";
 import { type ReactNode, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAuthContext } from "../auth/AuthContext";
 import { initials } from "../auth/initials";
 import { useObrasTotal } from "../features/obras/useObras";
 import { PERFIL_LABELS } from "../schemas/auth.schema";
-import { LogoIcon, LogoutIcon } from "./icons";
+import { LogoIcon } from "./icons";
 import { buildNav, type NavGroup } from "./nav";
 import styles from "./PageLayout.module.css";
 
@@ -93,7 +94,7 @@ export function PageLayout({ children, nav, pageTitle, breadcrumb, headerRight }
               <div className={styles.userRole}>{PERFIL_LABELS[user.perfil]}</div>
             </div>
             <button type="button" className={styles.logout} onClick={logout} aria-label="Sair">
-              <LogoutIcon />
+              <SignOutIcon size={18} />
             </button>
           </div>
         )}

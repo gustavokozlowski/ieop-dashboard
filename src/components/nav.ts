@@ -1,15 +1,16 @@
-import type { ReactNode } from "react";
+// Deep import por ícone: importar do barril (@phosphor-icons/react) faz o
+// bundler processar TODOS os ~9000 ícones (build de 0.2s → 40s+). Os caminhos
+// individuais evitam isso.
+import { BriefcaseIcon } from "@phosphor-icons/react/dist/icons/Briefcase";
+import { BuildingsIcon } from "@phosphor-icons/react/dist/icons/Buildings";
+import { CubeIcon } from "@phosphor-icons/react/dist/icons/Cube";
+import { MapTrifoldIcon } from "@phosphor-icons/react/dist/icons/MapTrifold";
+import { RobotIcon } from "@phosphor-icons/react/dist/icons/Robot";
+import { SquaresFourIcon } from "@phosphor-icons/react/dist/icons/SquaresFour";
+import { UsersThreeIcon } from "@phosphor-icons/react/dist/icons/UsersThree";
+import { createElement, type ReactNode } from "react";
 import { canManageUsers, canUseRAG } from "../auth/permissions";
 import type { Perfil } from "../schemas/auth.schema";
-import {
-  DashboardIcon,
-  FornecedoresIcon,
-  IAIcon,
-  Mapa3DIcon,
-  MapaIcon,
-  ObrasIcon,
-  UsersIcon,
-} from "./icons";
 
 export interface NavItem {
   path: string;
@@ -34,23 +35,23 @@ export interface NavCounts {
 // os badges (ex.: total de obras); ausente → item sem badge.
 export function buildNav(perfil: Perfil | undefined, counts?: NavCounts): NavGroup[] {
   const principal: NavItem[] = [
-    { path: "/", label: "Dashboard", icon: DashboardIcon({}) },
+    { path: "/", label: "Dashboard", icon: createElement(SquaresFourIcon) },
     {
       path: "/obras",
       label: "Obras",
-      icon: ObrasIcon({}),
+      icon: createElement(BuildingsIcon),
       badge: counts?.obras != null ? counts.obras.toLocaleString("pt-BR") : undefined,
     },
-    { path: "/fornecedores", label: "Fornecedores", icon: FornecedoresIcon({}) },
+    { path: "/fornecedores", label: "Fornecedores", icon: createElement(BriefcaseIcon) },
   ];
 
   if (canUseRAG(perfil)) {
-    principal.push({ path: "/ia", label: "Agente IA", icon: IAIcon({}) });
+    principal.push({ path: "/ia", label: "Agente IA", icon: createElement(RobotIcon) });
   }
 
   // Backoffice: só admin vê e acessa (criação de usuários gestor/admin).
   if (canManageUsers(perfil)) {
-    principal.push({ path: "/admin", label: "Administração", icon: UsersIcon({}) });
+    principal.push({ path: "/admin", label: "Administração", icon: createElement(UsersThreeIcon) });
   }
 
   return [
@@ -58,8 +59,8 @@ export function buildNav(perfil: Perfil | undefined, counts?: NavCounts): NavGro
     {
       label: "Relatórios",
       items: [
-        { path: "/mapa", label: "Mapa", icon: MapaIcon({}) },
-        { path: "/mapa-3d", label: "Mapa 3D", icon: Mapa3DIcon({}) },
+        { path: "/mapa", label: "Mapa", icon: createElement(MapTrifoldIcon) },
+        { path: "/mapa-3d", label: "Mapa 3D", icon: createElement(CubeIcon) },
       ],
     },
   ];

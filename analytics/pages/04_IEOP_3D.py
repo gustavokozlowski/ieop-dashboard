@@ -107,6 +107,12 @@ if df_f.empty:
 
 X_LABELS = {"valor_contrato": "Valor do contrato (R$)", "custo_m2": "Custo por m² (R$)"}
 
+# O `nome` costuma ser a descrição completa do edital — gigante. Trunca para o
+# rótulo do hover não estourar a largura e quebrar o layout do gráfico.
+df_f = df_f.copy()
+_nome = df_f["nome"].astype(str).str.strip()
+df_f["_obra"] = _nome.where(_nome.str.len() <= 60, _nome.str.slice(0, 57).str.rstrip() + "…")
+
 fig = px.scatter_3d(
     df_f,
     x=eixo_x,
@@ -115,7 +121,7 @@ fig = px.scatter_3d(
     color="ieop_score",
     color_continuous_scale=db.IEOP_COLORSCALE,
     range_color=(0, 100),
-    hover_name="nome",
+    hover_name="_obra",
     hover_data={
         "secretaria": True,
         "ieop_classe": True,

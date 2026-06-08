@@ -36,6 +36,21 @@ with st.sidebar:
         default=status_opts,
         format_func=lambda s: db.STATUS_LABELS.get(s, s),
     )
+    st.divider()
+    min_n = st.slider(
+        "Amostra mínima por célula",
+        1,
+        10,
+        1,
+        help="Células com menos obras que este valor têm baixa confiança estatística "
+        "(a média vem de poucas obras).",
+    )
+    low_conf_mode = st.radio(
+        "Células de baixa amostragem",
+        ["Marcar", "Ocultar"],
+        horizontal=True,
+        help="Marcar mantém a célula com um asterisco; Ocultar a esconde do mapa.",
+    )
 
 df_f = df[df["secretaria"].isin(sel_sec) & df["status"].isin(sel_status)]
 
@@ -74,24 +89,52 @@ st.divider()
 
 # ── Pivot heatmap ─────────────────────────────────────────────────────────────
 
-pivot = df_f.groupby(["secretaria", "status"])["prob_atraso"].mean().unstack(fill_value=0)
+grouped = df_f.groupby(["secretaria", "status"])["prob_atraso"]
+# fill_value=NaN: combinações sem obra ficam VAZIAS (não verde "0%"), para não
+# confundir "sem dados" com "risco baixo".
+pivot = grouped.mean().unstack()
+counts = grouped.size().unstack()
+
+# Secretaria mais crítica no topo: ordena pela prob. média da linha (desc).
+order = pivot.mean(axis=1, skipna=True).sort_values(ascending=False).index
+pivot = pivot.loc[order]
+counts = counts.loc[order]
 
 x_labels = [db.STATUS_LABELS.get(c, c) for c in pivot.columns]
-z_text = (pivot.values * 100).round(1).astype(str)
-z_text = np.where(pivot.values > 0, z_text + "%", "")
+z = pivot.values.copy()
+n = counts.values
+
+# Células com dado mas amostra abaixo do limite = baixa confiança estatística.
+low_mask = (~np.isnan(z)) & (np.nan_to_num(n) < min_n)
+n_low = int(low_mask.sum())
+if n_low and low_conf_mode == "Ocultar":
+    z[low_mask] = np.nan
+
+pct = (np.nan_to_num(z) * 100).round(1).astype(str) + "%"
+z_text = np.where(np.isnan(z), "", pct)
+# Asterisco nas células de baixa amostragem que continuam visíveis.
+if n_low and low_conf_mode == "Marcar":
+    z_text = np.where(low_mask, np.char.add(pct, " *"), z_text)
 
 fig = go.Figure(
     go.Heatmap(
-        z=pivot.values,
+        z=z,
         x=x_labels,
         y=pivot.index,
+        customdata=counts.values,
         colorscale=db.RISK_COLORSCALE,
         zmin=0,
         zmax=1,
         text=z_text,
         texttemplate="%{text}",
-        textfont=dict(size=12),
-        hovertemplate="Secretaria: %{y}<br>Status: %{x}<br>Prob. Atraso: %{z:.1%}<extra></extra>",
+        textfont=dict(size=11, color="#ffffff"),
+        xgap=2,
+        ygap=2,
+        hoverongaps=False,
+        hovertemplate=(
+            "Secretaria: %{y}<br>Status: %{x}<br>"
+            "Prob. Atraso: %{z:.1%}<br>Obras: %{customdata}<extra></extra>"
+        ),
         colorbar=dict(
             title="Prob. Atraso",
             tickformat=".0%",
@@ -99,11 +142,27 @@ fig = go.Figure(
         ),
     )
 )
+# Altura proporcional ao nº de secretarias para os rótulos não se sobreporem.
+heat_height = max(420, 26 * len(pivot.index) + 140)
 fig.update_layout(
-    **db.PLOTLY_LAYOUT, height=420, title="Prob. média de atraso — secretaria × status"
+    **db.PLOTLY_LAYOUT,
+    height=heat_height,
+    title="Prob. média de atraso — secretaria × status",
 )
 fig.update_xaxes(side="bottom")
+fig.update_yaxes(autorange="reversed")
 st.plotly_chart(fig, width="stretch")
+
+caption = "Células em branco: não há obras na combinação secretaria × status."
+if n_low:
+    if low_conf_mode == "Marcar":
+        caption += (
+            f" **\\***  {n_low} célula(s) com menos de {min_n} obra(s) "
+            "— baixa confiança estatística."
+        )
+    else:
+        caption += f" {n_low} célula(s) ocultada(s) por amostra < {min_n} obra(s)."
+st.caption(caption)
 
 # ── Distribuição de risco ─────────────────────────────────────────────────────
 

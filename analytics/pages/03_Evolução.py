@@ -5,6 +5,7 @@ from __future__ import annotations
 import os
 import sys
 
+import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -73,44 +74,63 @@ else:
 
 st.divider()
 
+# Aviso quando há um único mês: a série temporal é degenerada.
+n_meses = df_f["mes"].nunique()
+if n_meses < 2:
+    st.info(
+        f"As predições disponíveis cobrem apenas **{n_meses} mês**. "
+        "Sem variação temporal para traçar tendência — exibindo o retrato do período.",
+        icon=":material/info:",
+    )
+
 # ── Gráfico de evolução ────────────────────────────────────────────────────────
+
+st.subheader(
+    "Evolução mensal — probabilidade média de atraso"
+    if view == "Geral"
+    else "Evolução mensal por secretaria"
+)
 
 if view == "Geral":
     monthly = (
         df_f.groupby("mes")
         .agg(avg_prob=("prob_atraso", "mean"), n_obras=("obra_id", "count"))
         .reset_index()
+        .sort_values("mes")
     )
-    monthly["mes_str"] = monthly["mes"].dt.strftime("%b/%y")
+    # Eixo X categórico (rótulo de mês): evita o auto-zoom de datetime do Plotly,
+    # que com um único ponto degenera em ticks de frações de segundo.
+    monthly["mes_str"] = monthly["mes"].dt.strftime("%b/%Y")
 
     fig = go.Figure()
+    # Barras de volume primeiro (ficam atrás da linha).
+    fig.add_bar(
+        x=monthly["mes_str"],
+        y=monthly["n_obras"],
+        name="Nº de obras",
+        marker_color="#3b82f6",
+        opacity=0.25,
+        yaxis="y2",
+        hovertemplate="Obras: %{y}<extra></extra>",
+    )
     fig.add_scatter(
-        x=monthly["mes"],
+        x=monthly["mes_str"],
         y=monthly["avg_prob"],
         mode="lines+markers",
         name="Prob. média de atraso",
         line=dict(color="#A32D2D", width=2.5),
-        marker=dict(size=7),
-        hovertemplate="%{x|%b/%Y}<br>Prob.: %{y:.1%}<extra></extra>",
-    )
-
-    # Volume como barras secundárias
-    fig.add_bar(
-        x=monthly["mes"],
-        y=monthly["n_obras"],
-        name="Nº de obras",
-        marker_color="#1e2436",
-        opacity=0.6,
-        yaxis="y2",
-        hovertemplate="%{x|%b/%Y}<br>Obras: %{y}<extra></extra>",
+        marker=dict(size=9),
+        hovertemplate="Prob.: %{y:.1%}<extra></extra>",
     )
 
     fig.update_layout(
         **db.PLOTLY_LAYOUT,
         height=440,
-        title="Evolução mensal — probabilidade média de atraso",
-        yaxis=dict(tickformat=".0%", title="Prob. Atraso"),
-        yaxis2=dict(title="Nº obras", overlaying="y", side="right", showgrid=False),
+        xaxis=dict(title="Mês", type="category"),
+        yaxis=dict(tickformat=".0%", title="Prob. Atraso", range=[0, 1]),
+        yaxis2=dict(
+            title="Nº obras", overlaying="y", side="right", showgrid=False, rangemode="tozero"
+        ),
         legend=dict(orientation="h", yanchor="bottom", y=1.02),
         hovermode="x unified",
     )
@@ -120,44 +140,70 @@ else:
     monthly_sec = (
         df_f.groupby(["mes", "secretaria"])["prob_atraso"].mean().reset_index(name="avg_prob")
     )
+    monthly_sec["mes_str"] = monthly_sec["mes"].dt.strftime("%b/%Y")
     fig = px.line(
-        monthly_sec,
-        x="mes",
+        monthly_sec.sort_values("mes"),
+        x="mes_str",
         y="avg_prob",
         color="secretaria",
         markers=True,
-        labels={"avg_prob": "Prob. média de atraso", "mes": "Mês", "secretaria": "Secretaria"},
+        labels={"avg_prob": "Prob. média de atraso", "mes_str": "Mês", "secretaria": "Secretaria"},
     )
     fig.update_layout(
         **db.PLOTLY_LAYOUT,
         height=440,
-        title="Evolução mensal por secretaria",
-        yaxis_tickformat=".0%",
+        xaxis=dict(title="Mês", type="category"),
+        yaxis=dict(tickformat=".0%", range=[0, 1]),
         legend=dict(orientation="h", yanchor="bottom", y=1.02),
         hovermode="x unified",
     )
-    fig.update_traces(hovertemplate="%{y:.1%}<extra>%{fullData.name}</extra>")
+    fig.update_traces(marker=dict(size=9), hovertemplate="%{y:.1%}<extra>%{fullData.name}</extra>")
     st.plotly_chart(fig, width="stretch")
 
 # ── Heatmap de risco mês × secretaria ─────────────────────────────────────────
 
-st.subheader("Calor de risco — mês × secretaria")
+st.subheader("Calor de risco — secretaria × mês")
+
+# Secretarias nas linhas (rótulos legíveis na horizontal) × meses nas colunas.
+# Colunas em "%Y-%m" ordenam cronologicamente; relabel para exibição depois.
 heat = (
-    df_f.groupby([df_f["mes"].dt.strftime("%Y-%m"), "secretaria"])["prob_atraso"]
+    df_f.assign(_mes=df_f["mes"].dt.strftime("%Y-%m"))
+    .groupby(["secretaria", "_mes"])["prob_atraso"]
     .mean()
-    .unstack(fill_value=0)
+    .unstack()  # sem fill_value: combinações sem obra ficam vazias, não verde "0%"
 )
+# Mais crítica no topo.
+heat = heat.loc[heat.mean(axis=1, skipna=True).sort_values(ascending=False).index]
+
+# type="category" evita o Plotly interpretar "2026-06" como data e dar zoom em
+# frações de segundo quando há um único mês.
+x_labels = [pd.to_datetime(c, format="%Y-%m").strftime("%b/%Y") for c in heat.columns]
+z = heat.values
+z_text = np.where(np.isnan(z), "", (np.nan_to_num(z) * 100).round(0).astype(int).astype(str) + "%")
+
 fig2 = go.Figure(
     go.Heatmap(
-        z=heat.values,
-        x=heat.columns,
+        z=z,
+        x=x_labels,
         y=heat.index,
         colorscale=db.RISK_COLORSCALE,
         zmin=0,
         zmax=1,
-        hovertemplate="Mês: %{y}<br>Secretaria: %{x}<br>Prob.: %{z:.1%}<extra></extra>",
-        colorbar=dict(tickformat=".0%"),
+        text=z_text,
+        texttemplate="%{text}",
+        textfont=dict(size=11, color="#ffffff"),
+        xgap=2,
+        ygap=2,
+        hoverongaps=False,
+        hovertemplate="Secretaria: %{y}<br>Mês: %{x}<br>Prob.: %{z:.1%}<extra></extra>",
+        colorbar=dict(title="Prob. Atraso", tickformat=".0%"),
     )
 )
-fig2.update_layout(**db.PLOTLY_LAYOUT, height=350)
+fig2.update_layout(
+    **db.PLOTLY_LAYOUT,
+    height=max(360, 24 * len(heat.index) + 120),
+    xaxis=dict(type="category", title="Mês"),
+)
+fig2.update_yaxes(autorange="reversed")
 st.plotly_chart(fig2, width="stretch")
+st.caption("Células em branco: não há obras na combinação secretaria × mês.")

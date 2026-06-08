@@ -65,6 +65,26 @@ IEOP_COLORSCALE = [
 ]
 
 
+def clean_label(s: pd.Series) -> pd.Series:
+    """Normaliza rótulos textuais vindos do banco (paliativo de encoding).
+
+    Troca o caractere de substituição Unicode (�) e o `?` órfão — restos de
+    mojibake em separadores — por travessão, colapsa espaços e aplica Title Case.
+    Correção definitiva é nos dados de origem (`obras.secretaria` no Supabase).
+    """
+    out = (
+        s.fillna("Não informado")
+        .astype(str)
+        .str.replace(r"\s+\?\s+", " – ", regex=True)  # '?' separador → travessão
+        .str.replace("�", "", regex=False)  # caractere de substituição órfão
+        .str.replace("?", "", regex=False)  # '?' restante (acento perdido no meio)
+        .str.replace(r"\s+", " ", regex=True)
+        .str.strip(" –-")
+        .str.title()
+    )
+    return out.replace("", "Não informado")
+
+
 def ieop_classe(score: float) -> str:
     """Faixa textual do IEOP a partir do score 0–100 (igual ao frontend)."""
     if score >= 80:
@@ -182,6 +202,13 @@ def load_predicoes() -> pd.DataFrame:
     pred_slim = pred[["id_obra", "prob_atraso", "prob_estouro", "atualizado_em"]].rename(
         columns={"id_obra": "obra_id", "atualizado_em": "_ts"}
     )
+    # `predicoes` guarda histórico (várias linhas por obra). Mantém só a predição
+    # mais recente de cada obra para não duplicar obras no heatmap/contagens.
+    pred_slim = (
+        pred_slim.assign(_ts=pd.to_datetime(pred_slim["_ts"], errors="coerce", utc=True))
+        .sort_values("_ts")
+        .drop_duplicates("obra_id", keep="last")
+    )
     obra_cols = [
         c
         for c in [
@@ -207,11 +234,7 @@ def load_predicoes() -> pd.DataFrame:
         mapa = dict(zip(forn["cnpj"], forn["razao_social"], strict=False))
         forn_nome = df["cnpj_executora"].map(mapa).fillna(df["cnpj_executora"]).fillna("—")
 
-    secretaria = (
-        df["secretaria"].fillna("Não informado").astype(str).str.title()
-        if "secretaria" in df
-        else "Não informado"
-    )
+    secretaria = clean_label(df["secretaria"]) if "secretaria" in df else "Não informado"
 
     return pd.DataFrame(
         {

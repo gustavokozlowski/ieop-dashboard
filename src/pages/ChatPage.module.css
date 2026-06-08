@@ -41,6 +41,18 @@
 .welcomeIcon {
   font-size: 3rem;
   line-height: 1;
+  display: inline-flex;
+  color: var(--color-success);
+  animation: ieop-twinkle-glow 2.5s ease-in-out infinite;
+  transform-origin: center;
+  will-change: transform, filter, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcomeIcon {
+    animation: none;
+    filter: drop-shadow(0 0 6px rgba(47, 190, 144, 0.5));
+  }
 }
 
 .welcomeTitle {

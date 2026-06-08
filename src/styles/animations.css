@@ -70,6 +70,21 @@
   }
 }
 
+/* Estrela "viva" do RAG: respira com glow verde pulsante. */
+@keyframes ieop-twinkle-glow {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+    filter: drop-shadow(0 0 2px rgba(47, 190, 144, 0.35));
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 1;
+    filter: drop-shadow(0 0 12px rgba(47, 190, 144, 0.7));
+  }
+}
+
 @keyframes ieop-blink {
   0%,
   49% {

@@ -117,3 +117,15 @@
   color: var(--color-text-muted);
   font-size: var(--text-sm);
 }
+
+/* ── Mobile: a grade de aditivos (6 colunas) não cabe — vira tabela rolável ── */
+@media (max-width: 768px) {
+  .aditivosList {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .aditivoHeader,
+  .aditivoRow {
+    min-width: 540px;
+  }
+}

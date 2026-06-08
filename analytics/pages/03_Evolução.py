@@ -15,6 +15,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 import db  # noqa: E402
 
 st.set_page_config(page_title="Evolução — IEOP", layout="wide", page_icon=":material/trending_up:")
+db.inject_responsive_css()
 st.title(":material/trending_up: Evolução Temporal das Predições")
 st.caption("Tendência da probabilidade de atraso e volume de obras ao longo do tempo.")
 
@@ -134,7 +135,7 @@ if view == "Geral":
         legend=dict(orientation="h", yanchor="bottom", y=1.02),
         hovermode="x unified",
     )
-    st.plotly_chart(fig, width="stretch")
+    st.plotly_chart(fig, width="stretch", config={"responsive": True})
 
 else:
     monthly_sec = (
@@ -158,7 +159,7 @@ else:
         hovermode="x unified",
     )
     fig.update_traces(marker=dict(size=9), hovertemplate="%{y:.1%}<extra>%{fullData.name}</extra>")
-    st.plotly_chart(fig, width="stretch")
+    st.plotly_chart(fig, width="stretch", config={"responsive": True})
 
 # ── Heatmap de risco mês × secretaria ─────────────────────────────────────────
 
@@ -196,14 +197,20 @@ fig2 = go.Figure(
         ygap=2,
         hoverongaps=False,
         hovertemplate="Secretaria: %{y}<br>Mês: %{x}<br>Prob.: %{z:.1%}<extra></extra>",
-        colorbar=dict(title="Prob. Atraso", tickformat=".0%"),
+        colorbar=dict(title="Prob. Atraso", tickformat=".0%", thickness=12, len=0.85),
     )
 )
 fig2.update_layout(
     **db.PLOTLY_LAYOUT,
     height=max(360, 24 * len(heat.index) + 120),
-    xaxis=dict(type="category", title="Mês"),
+    xaxis=dict(type="category", title="Mês", automargin=True),
 )
-fig2.update_yaxes(autorange="reversed")
-st.plotly_chart(fig2, width="stretch")
+fig2.update_yaxes(
+    autorange="reversed",
+    tickmode="array",
+    tickvals=list(heat.index),
+    ticktext=[db.short_label(s) for s in heat.index],
+    automargin=True,
+)
+st.plotly_chart(fig2, width="stretch", config={"responsive": True})
 st.caption("Células em branco: não há obras na combinação secretaria × mês.")

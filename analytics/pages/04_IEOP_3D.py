@@ -15,6 +15,7 @@ import db  # noqa: E402
 st.set_page_config(
     page_title="IEOP 3D — Custo × Atraso × IEOP", layout="wide", page_icon=":material/view_in_ar:"
 )
+db.inject_responsive_css()
 st.title(":material/view_in_ar: Custo × Atraso × IEOP")
 st.caption(
     "Cada ponto é uma obra. As três variáveis contínuas aparecem juntas — "
@@ -149,7 +150,7 @@ fig.update_layout(
     ),
 )
 
-st.plotly_chart(fig, width="stretch")
+st.plotly_chart(fig, width="stretch", config={"responsive": True})
 
 st.caption(
     "Cor = IEOP (vermelho = crítico, verde = ótimo). "

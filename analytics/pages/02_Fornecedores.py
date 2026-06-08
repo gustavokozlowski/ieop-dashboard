@@ -12,6 +12,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 import db  # noqa: E402
 
 st.set_page_config(page_title="Fornecedores — IEOP", layout="wide", page_icon=":material/business:")
+db.inject_responsive_css()
 st.title(":material/business: Risco × Recorrência de Fornecedores")
 st.caption("Análise de fornecedores por probabilidade média de atraso e volume de obras.")
 
@@ -119,14 +120,16 @@ fig.add_hline(
 fig.add_hline(y=0.7, line_dash="dash", line_color="#A32D2D", annotation_text="alto risco 70%")
 fig.add_hline(y=0.4, line_dash="dash", line_color="#BA7517", annotation_text="médio risco 40%")
 
+st.subheader("Risco médio × recorrência de fornecedor (tamanho = valor total)")
 fig.update_layout(
     **db.PLOTLY_LAYOUT,
     height=520,
     yaxis_tickformat=".0%",
-    coloraxis_colorbar=dict(title="Prob. Atraso", tickformat=".0%"),
-    title="Risco médio × recorrência de fornecedor (tamanho = valor total)",
+    coloraxis_colorbar=dict(title="Prob. Atraso", tickformat=".0%", thickness=12, len=0.85),
 )
-st.plotly_chart(fig, width="stretch")
+fig.update_xaxes(automargin=True)
+fig.update_yaxes(automargin=True)
+st.plotly_chart(fig, width="stretch", config={"responsive": True})
 
 # ── Tabela top fornecedores ────────────────────────────────────────────────────
 

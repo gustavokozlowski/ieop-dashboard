@@ -14,6 +14,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 import db  # noqa: E402
 
 st.set_page_config(page_title="Predições — IEOP", layout="wide", page_icon=":material/thermostat:")
+db.inject_responsive_css()
 st.title(":material/thermostat: Mapa de Calor de Risco")
 st.caption("Probabilidade média de atraso por secretaria e status da obra.")
 
@@ -139,19 +140,26 @@ fig = go.Figure(
             title="Prob. Atraso",
             tickformat=".0%",
             tickvals=[0, 0.25, 0.5, 0.75, 1],
+            thickness=12,
+            len=0.85,
         ),
     )
 )
+st.subheader("Prob. média de atraso — secretaria × status")
 # Altura proporcional ao nº de secretarias para os rótulos não se sobreporem.
 heat_height = max(420, 26 * len(pivot.index) + 140)
-fig.update_layout(
-    **db.PLOTLY_LAYOUT,
-    height=heat_height,
-    title="Prob. média de atraso — secretaria × status",
+fig.update_layout(**db.PLOTLY_LAYOUT, height=heat_height)
+fig.update_xaxes(side="bottom", automargin=True)
+# ticktext curto evita que nomes longos sejam cortados em telas estreitas;
+# tickvals mantém as categorias completas (hover/dados intactos).
+fig.update_yaxes(
+    autorange="reversed",
+    tickmode="array",
+    tickvals=list(pivot.index),
+    ticktext=[db.short_label(s) for s in pivot.index],
+    automargin=True,
 )
-fig.update_xaxes(side="bottom")
-fig.update_yaxes(autorange="reversed")
-st.plotly_chart(fig, width="stretch")
+st.plotly_chart(fig, width="stretch", config={"responsive": True})
 
 caption = "Células em branco: não há obras na combinação secretaria × status."
 if n_low:
@@ -195,4 +203,10 @@ fig2.update_layout(
     showlegend=True,
     legend=dict(orientation="h", yanchor="bottom", y=1.02),
 )
-st.plotly_chart(fig2, width="stretch")
+fig2.update_xaxes(
+    tickmode="array",
+    tickvals=list(pivot_dist.index),
+    ticktext=[db.short_label(s) for s in pivot_dist.index],
+    automargin=True,
+)
+st.plotly_chart(fig2, width="stretch", config={"responsive": True})

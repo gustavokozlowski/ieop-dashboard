@@ -85,6 +85,71 @@ def clean_label(s: pd.Series) -> pd.Series:
     return out.replace("", "Não informado")
 
 
+# Abreviações de termos burocráticos: encurtam rótulos de eixo sem perder o que
+# distingue uma secretaria da outra (o sufixo). Aplicado só na EXIBIÇÃO.
+_ABBREV = {
+    "Secretaria": "Sec.",
+    "Municipal": "Mun.",
+    "Adjunta": "Adj.",
+    "Executiva": "Exec.",
+    "Desenvolvimento": "Desenv.",
+    "Município": "Mun.",
+    "Infraestrutura": "Infra.",
+    "Tecnologia": "Tec.",
+    "Previdência": "Prev.",
+    "Acessibilidade": "Acess.",
+    "Sustentabilidade": "Sustent.",
+    "Diretoria-Executiva": "Dir.-Exec.",
+    "Procuradoria": "Proc.",
+}
+
+
+def inject_responsive_css() -> None:
+    """CSS global para telas estreitas.
+
+    O Streamlit não empilha ``st.columns`` no mobile — aqui fazemos os blocos
+    horizontais quebrarem (2 colunas ≤768px, 1 coluna ≤480px) e garantimos que
+    os gráficos Plotly nunca ultrapassem a largura do container. Deve ser
+    chamado no topo de cada página (o CSS é injetado por execução de script).
+    """
+    st.markdown(
+        """
+        <style>
+        @media (max-width: 768px) {
+          [data-testid="stHorizontalBlock"] { flex-wrap: wrap; gap: 0.6rem; }
+          [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+            flex: 1 1 calc(50% - 0.6rem) !important;
+            min-width: calc(50% - 0.6rem) !important;
+          }
+        }
+        @media (max-width: 480px) {
+          [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+            flex: 1 1 100% !important;
+            min-width: 100% !important;
+          }
+        }
+        [data-testid="stPlotlyChart"],
+        [data-testid="stPlotlyChart"] > div {
+          max-width: 100% !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def short_label(text: str, maxlen: int = 32) -> str:
+    """Versão curta de um rótulo longo (eixos de gráfico em telas estreitas).
+
+    Abrevia termos comuns e, se ainda exceder ``maxlen``, trunca com reticências.
+    Não altera os dados — serve apenas como ``ticktext`` para exibição.
+    """
+    out = " ".join(_ABBREV.get(w, w) for w in str(text).split())
+    if len(out) > maxlen:
+        out = out[: maxlen - 1].rstrip() + "…"
+    return out
+
+
 def ieop_classe(score: float) -> str:
     """Faixa textual do IEOP a partir do score 0–100 (igual ao frontend)."""
     if score >= 80:

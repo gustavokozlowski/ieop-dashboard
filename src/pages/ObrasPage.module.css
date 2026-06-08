@@ -1,0 +1,25 @@
+/* Pill "● N obras no município" no header. Escondido no mobile para não
+   espremer o título da página (que colapsava para "O…"). */
+.headerStatus {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.headerStatusDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-success);
+  box-shadow: 0 0 6px var(--color-success);
+}
+
+@media (max-width: 768px) {
+  .headerStatus {
+    display: none;
+  }
+}

@@ -23,6 +23,7 @@ import { RiskBadge } from "../features/obras/RiskBadge";
 import type { ObraListItem, ObraStatus, ObrasFilter } from "../features/obras/types";
 import { DEFAULT_FILTER } from "../features/obras/types";
 import { useObras } from "../features/obras/useObras";
+import styles from "./ObrasPage.module.css";
 
 const STATUS_VARIANT: Record<ObraStatus, BadgeVariant> = {
   em_andamento: "info",
@@ -171,26 +172,8 @@ export function ObrasPage() {
       breadcrumb="Macaé / Obras"
       headerRight={
         <>
-          <span
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 7,
-              fontFamily: "var(--font-mono)",
-              fontSize: "0.72rem",
-              color: "var(--color-text-muted)",
-              whiteSpace: "nowrap",
-            }}
-          >
-            <span
-              style={{
-                width: 7,
-                height: 7,
-                borderRadius: "50%",
-                background: "var(--color-success)",
-                boxShadow: "0 0 6px var(--color-success)",
-              }}
-            />
+          <span className={styles.headerStatus}>
+            <span className={styles.headerStatusDot} />
             {obras.length} obras no município
           </span>
           <button

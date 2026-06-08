@@ -125,7 +125,7 @@ fig.update_layout(
     **db.PLOTLY_LAYOUT,
     height=520,
     yaxis_tickformat=".0%",
-    coloraxis_colorbar=dict(title="Prob. Atraso", tickformat=".0%", thickness=12, len=0.85),
+    coloraxis_colorbar=dict(title="Prob. Atraso", tickformat=".0%", thickness=18, len=0.9),
 )
 fig.update_xaxes(automargin=True)
 fig.update_yaxes(automargin=True)

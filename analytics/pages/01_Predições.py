@@ -140,8 +140,8 @@ fig = go.Figure(
             title="Prob. Atraso",
             tickformat=".0%",
             tickvals=[0, 0.25, 0.5, 0.75, 1],
-            thickness=12,
-            len=0.85,
+            thickness=18,
+            len=0.9,
         ),
     )
 )

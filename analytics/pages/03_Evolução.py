@@ -197,7 +197,7 @@ fig2 = go.Figure(
         ygap=2,
         hoverongaps=False,
         hovertemplate="Secretaria: %{y}<br>Mês: %{x}<br>Prob.: %{z:.1%}<extra></extra>",
-        colorbar=dict(title="Prob. Atraso", tickformat=".0%", thickness=12, len=0.85),
+        colorbar=dict(title="Prob. Atraso", tickformat=".0%", thickness=18, len=0.9),
     )
 )
 fig2.update_layout(

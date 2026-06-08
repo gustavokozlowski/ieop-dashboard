@@ -408,7 +408,7 @@
 /* banner de erro do servidor */
 .errorBanner {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--space-2);
   padding: var(--space-3) var(--space-4);
   background: var(--color-danger-bg);
@@ -418,6 +418,11 @@
   font-size: var(--text-sm);
   line-height: 1.5;
   animation: ieop-shake 360ms ease;
+}
+
+/* O ícone não encolhe e fica alinhado ao texto */
+.errorBanner svg {
+  flex-shrink: 0;
 }
 
 .infoNote {

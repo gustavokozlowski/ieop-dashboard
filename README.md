@@ -24,6 +24,8 @@ cards, badges, a tabela de obras e os marcadores do mapa.
 
 ## Sumário
 
+- [Como funciona](#como-funciona)
+- [Funcionalidades](#funcionalidades)
 - [Arquitetura](#arquitetura)
 - [Stack](#stack)
 - [Configuração de ambiente](#configuração-de-ambiente)
@@ -39,6 +41,95 @@ cards, badges, a tabela de obras e os marcadores do mapa.
 - [Testes](#testes)
 - [CI](#ci)
 - [Convenções](#convenções)
+
+---
+
+## Como funciona
+
+O IEOP é uma **SPA React** que dá uma visão analítica das obras públicas de
+Macaé/RJ. O fluxo, de ponta a ponta:
+
+1. **Entrada** — o usuário acessa `/login` (ou `/register`, que cria sempre um
+   perfil `readonly`). O backend devolve um `access_token` (mantido **em
+   memória**) e um `refresh_token` (cookie httpOnly). A partir daí o
+   `AuthProvider` conhece o perfil e libera as rotas.
+2. **Navegação** — `PrivateRoute` protege as páginas internas; o menu lateral
+   (`nav.ts`) mostra só os itens permitidos ao perfil. Rotas sensíveis têm
+   guarda extra (`RagRoute` para a IA, `AdminRoute` para o backoffice).
+3. **Dados** — cada página chama hooks (`use<Feature>`) que usam **TanStack
+   Query** para buscar via **axios**. Toda requisição vai para `/proxy/*`
+   (mesma origem) e o **servidor Bun** reencaminha ao backend, evitando CORS.
+   **Toda resposta é validada com Zod** antes de chegar à UI.
+4. **Apresentação** — os dados validados alimentam cards, tabelas, gráficos
+   (Recharts) e mapas (Leaflet 2D / deck.gl 3D). O **IEOP** (0–100, calculado
+   no backend) é traduzido em classes coloridas em toda a interface.
+5. **Sessão** — em respostas `401`, um interceptor tenta **refresh silencioso**
+   e repete a requisição; se falhar, encerra a sessão. Erros `500+` viram
+   *toasts* não-intrusivos.
+
+```
+Login ─► AuthProvider (perfil) ─► rota protegida ─► useFeature (TanStack Query)
+        ─► axios /proxy/* ─► Bun ─► Backend ─► Zod ✓ ─► UI (cards/tabela/mapa)
+```
+
+---
+
+## Funcionalidades
+
+### 📊 Dashboard (`/`)
+- **Herói IEOP**: índice de eficiência municipal (0–100) com a média dos quatro
+  componentes **C·P·R·E** (Custo, Atraso, Recorrência, Execução), calculada a
+  partir das obras reais — só exibida quando todas têm dado (nada é fabricado).
+- **Distribuição por classe** IEOP (Ótimo → Crítico).
+- **Métricas globais** (total de obras, em andamento, valor contratado, execução
+  média) com **delta % vs. período anterior** de mesma duração.
+- **Seletor de período** (`PeriodToggle`) e indicador "ao vivo".
+- **Top 5 alertas** de risco, **rosca** por status, **barras** por secretaria e
+  **linha** de evolução mensal.
+
+### 🏗️ Obras (`/obras`)
+- **Tabela** ordenável e paginada de obras/contratos.
+- **Filtros** por busca textual, status, nível de risco e secretaria.
+- Colunas com **badge de risco**, **badge IEOP**, barra de execução e valores em
+  BRL.
+- **Exportar CSV** das obras filtradas.
+- Clique em uma linha → **detalhe da obra**.
+
+### 🔍 Detalhe da obra (`/obras/:id`)
+- Cabeçalho, cards de **execução**, **datas** e **predição de ML** (probabilidade
+  de atraso), seção de **contratos**, card **IEOP**, **mini-mapa** da localização
+  e card do **fornecedor** responsável.
+
+### 🗺️ Mapa 2D (`/mapa`)
+- Mapa **Leaflet** georreferenciado de Macaé com **marcadores agrupados**
+  (cluster), coloridos por IEOP (fallback para risco), **limite municipal**
+  (GeoJSON) e **legenda** de risco.
+- **Filtros** por risco, secretaria e status; **exportar CSV** do recorte.
+
+### 🧊 Mapa 3D (`/mapa-3d`)
+- Visualização 3D com **deck.gl** das obras georreferenciadas, carregada **sob
+  demanda** (lazy + code-splitting) para não pesar o bundle inicial.
+
+### 🏢 Fornecedores (`/fornecedores`)
+- **Ranking** de fornecedores com CNPJ, razão social, nº de contratos, valores e
+  taxa de aditivos.
+- **Busca** por razão social ou CNPJ, **filtro por risco** e toggle **"Somente
+  com alerta" (aditivos > 30%)**.
+- **Exportar CSV**; clique → **perfil do fornecedor**.
+
+### 👤 Perfil do fornecedor (`/fornecedores/:id`)
+- Cabeçalho com indicadores, **gráfico de valor contratado por ano**, **evolução
+  de risco** e **histórico de obras** do fornecedor.
+
+### ✨ Agente IA — RAG (`/ia`) · *admin / gestor*
+- Chat em **linguagem natural** sobre obras, contratos e fornecedores, com
+  respostas **fundamentadas nos documentos oficiais** (RAG).
+- **Sugestões de perguntas**, **histórico da sessão** (navegável) e exibição das
+  **fontes** consultadas.
+
+### 🔐 Administração (`/admin`) · *admin*
+- **Backoffice** de usuários: criação de contas com perfis elevados
+  (gestor/admin), exclusivo de administradores.
 
 ---
 
@@ -390,6 +481,7 @@ Base: `BUN_PUBLIC_API_URL` (ou `/proxy` em dev).
 | GET  | `/api/v1/obras/:id` | detalhe de uma obra |
 | GET  | `/api/v1/mapa` | pontos georreferenciados |
 | GET  | `/api/v1/fornecedores` · `/:id` · `/cnpj/:cnpj` | fornecedores |
+| POST | `/api/v1/ia/consulta` | consulta ao agente RAG (resposta completa em JSON) |
 
 ---
 

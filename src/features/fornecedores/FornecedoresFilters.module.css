@@ -89,6 +89,15 @@
 }
 
 .alertLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast);
+}
+
+/* Destaca em vermelho apenas quando o filtro está ativo */
+.toggle:has(input:checked) .alertLabel {
   color: var(--color-danger);
   font-weight: var(--font-medium);
 }

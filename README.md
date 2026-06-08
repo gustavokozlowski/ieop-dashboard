@@ -278,9 +278,13 @@ docker rm -f ieop
 ## IEOP Analytics
 
 **IEOP Analytics** (em `analytics/`, construído com Streamlit) é a interface
-analítica complementar, focada nas **visualizações de ML** do IEOP. É
-**independente** do app React — ambos só consomem o mesmo backend/dados.
-Documentação detalhada em [analytics/README.md](analytics/README.md).
+analítica complementar, focada nas **visualizações de ML** do IEOP. Um painel
+multipágina que transforma as **predições de risco** do modelo (probabilidade
+de atraso e de estouro de custo por obra) em quatro gráficos Plotly interativos,
+respondendo de forma visual *onde* e *quanto* está o risco — por secretaria,
+status, fornecedor e ao longo do tempo. É **independente** do app React — ambos
+só consomem o mesmo backend/dados. Documentação detalhada em
+[analytics/README.md](analytics/README.md).
 
 ### Pré-requisitos
 
@@ -293,7 +297,7 @@ cd analytics
 python -m venv .venv
 source .venv/bin/activate    # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-streamlit run app.py         # http://localhost:8501
+streamlit run App.py         # http://localhost:8501
 ```
 
 Lê o `.env` da raiz do projeto. Com `SUPABASE_URL`/`SUPABASE_ANON_KEY`
@@ -306,10 +310,15 @@ Conjunto IEOP / ML (destacado na home):
 
 | Página | Conteúdo |
 |--------|----------|
-| 🌡️ Predições | mapa de calor de risco por secretaria × status |
-| 🏢 Fornecedores | scatter risco × recorrência por fornecedor |
-| 📈 Evolução | evolução temporal das predições de risco |
-| 🧊 IEOP 3D | dispersão 3D custo × atraso × IEOP |
+| 🌡️ Predições | mapa de calor de risco por secretaria × status, com filtros, métricas e flag de baixa amostragem |
+| 🏢 Fornecedores | scatter risco × recorrência por fornecedor + tabela top 15 |
+| 📈 Evolução | série temporal das predições + heatmap secretaria × mês |
+| 🧊 IEOP 3D | dispersão 3D custo × atraso × IEOP com filtros |
+
+**Destaques transversais:** fallback automático para dados de exemplo (nunca
+quebra), tema escuro alinhado ao app React, **responsividade ponta a ponta**
+(colunas empilham e gráficos se adaptam no mobile) e qualidade de dados
+(predição mais recente por obra + normalização de *encoding*).
 
 As páginas Features e Comparativo foram removidas por não terem fonte de
 dados real (o modelo não publica `feature_importance` nem execução real ×

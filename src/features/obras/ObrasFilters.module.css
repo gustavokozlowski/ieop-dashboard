@@ -58,6 +58,9 @@
 .searchInput:focus { border-color: var(--color-success); }
 
 .select {
+  flex: 1 1 160px;
+  min-width: 0;
+  max-width: 100%;
   background: var(--color-surface2);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -68,6 +71,7 @@
   cursor: pointer;
   transition: border-color var(--transition-fast);
   appearance: none;
+  text-overflow: ellipsis;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238b90a8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 8px center;
@@ -77,6 +81,8 @@
 .select:focus { border-color: var(--color-success); }
 
 .dateInput {
+  flex: 1 1 140px;
+  min-width: 0;
   background: var(--color-surface2);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -113,4 +119,16 @@
 .resetBtn:hover {
   color: var(--color-text-secondary);
   border-color: var(--color-text-muted);
+}
+
+/* Telas estreitas: cada controle ocupa a linha inteira para não estourar */
+@media (max-width: 640px) {
+  .select,
+  .dateInput {
+    flex-basis: 100%;
+  }
+
+  .sep {
+    display: none;
+  }
 }

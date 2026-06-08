@@ -47,6 +47,17 @@
   .table {
     min-width: 720px;
   }
+
+  /* Vazio/carregando: sem colunas a espremer — não força largura nem mostra
+     cabeçalhos, para a mensagem (centralizada) não ser cortada fora da
+     viewport. */
+  .tableEmpty {
+    min-width: 0;
+  }
+
+  .tableEmpty thead {
+    display: none;
+  }
 }
 
 .table th {

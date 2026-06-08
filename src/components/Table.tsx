@@ -99,7 +99,7 @@ export function Table<T extends Record<string, unknown>>({
       )}
 
       <div className={styles.tableContainer}>
-        <table className={styles.table}>
+        <table className={`${styles.table} ${pageRows.length === 0 ? styles.tableEmpty : ""}`}>
           <thead>
             <tr>
               {columns.map((col) => (

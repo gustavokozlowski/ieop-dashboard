@@ -39,7 +39,7 @@ const Mapa3DPage = lazyWithReload(() =>
 export function App() {
   return (
     <ErrorBoundary>
-      <Suspense fallback={<LoadingSpinner size="lg" label="Carregando…" />}>
+      <Suspense fallback={<LoadingSpinner size="lg" label="Carregando…" fullPage />}>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />

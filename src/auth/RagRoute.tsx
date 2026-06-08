@@ -66,7 +66,7 @@ export function RagRoute() {
   }
 
   return (
-    <Suspense fallback={<LoadingSpinner size="lg" label="Carregando assistente…" />}>
+    <Suspense fallback={<LoadingSpinner size="lg" label="Carregando assistente…" fullPage />}>
       <ChatPage />
     </Suspense>
   );

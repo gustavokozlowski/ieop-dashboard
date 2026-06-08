@@ -66,7 +66,7 @@ export function AdminRoute() {
   }
 
   return (
-    <Suspense fallback={<LoadingSpinner size="lg" label="Carregando administração…" />}>
+    <Suspense fallback={<LoadingSpinner size="lg" label="Carregando administração…" fullPage />}>
       <AdminUsuariosPage />
     </Suspense>
   );
